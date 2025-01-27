@@ -1,0 +1,33 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7  # Official MySQL image
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: password   # Set the root password for MySQL
+      MYSQL_DATABASE: mydb            # Name of the database to create
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql  # Initialize DB with SQL script
+    ports:
+      - "3306:3306"  # Expose MySQL port
+    networks:
+      - app-network
+
+  web:
+    build: ./node-app  # Build the Node.js app from the node-app folder
+    container_name: node-web
+    environment:
+      MYSQL_HOST: db          # The name of the MySQL service (container) in Docker
+      MYSQL_USER: root        # MySQL user (root)
+      MYSQL_PASSWORD: password  # MySQL password
+      MYSQL_DB: mydb          # MySQL database
+    ports:
+      - "8080:8080"  # Expose Node.js app on port 8080
+    depends_on:
+      - db  # Wait for the MySQL container to be ready before starting the web app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge  # Default bridge network for containers to communicate
