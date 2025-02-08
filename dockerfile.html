@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creating a Dockerfile and Building Images</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Docker Learning Hub</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="introduction.html">Introduction</a></li>
+        <li><a href="components.html">Components</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <h2>Creating a Dockerfile and Building Images</h2>
+      <p>
+        In this tutorial, you will learn how to create a Dockerfile to containerize your application. Topics include:
+      </p>
+      <ul>
+        <li>Writing a Dockerfile with best practices</li>
+        <li>Building an image using <code>docker build</code></li>
+        <li>Tagging and running the resulting image</li>
+      </ul>
+      <h3>Sample Dockerfile</h3>
+      <p>Create a file named <code>Dockerfile</code> with the following content:</p>
+      <pre><code class="dockerfile">
+# Use an official Node.js image as the base
+FROM node:14-alpine
+
+# Set the working directory
+WORKDIR /usr/src/app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the port your app runs on
+EXPOSE 3000
+
+# Start the application
+CMD [ "node", "server.js" ]
+      </code></pre>
+      <h3>Building and Running the Image</h3>
+      <pre><code class="bash">
+# Build the Docker image and tag it as "my-node-app"
+docker build -t my-node-app .
+
+# Run the container mapping port 3000
+docker run -d -p 3000:3000 my-node-app
+      </code></pre>
+      <p>
+        By following these steps, you'll be able to containerize your Node.js application using Docker.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 Docker Learning Hub</p>
+  </footer>
+</body>
+</html>
