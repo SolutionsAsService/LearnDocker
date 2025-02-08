@@ -7,30 +7,114 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Header Section with Logo and Navigation -->
   <header>
-    <h1>Docker Learning Hub</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="introduction.html">Introduction</a></li>
-        <li><a href="components.html">Components</a></li>
-        <li><a href="tutorials.html">Tutorials</a></li>
-      </ul>
-    </nav>
+    <div class="header-container">
+      <div class="logo">
+        <!-- Small Docker logo to keep header compact -->
+        <img src="images/docker-logo.png" alt="Docker Logo" class="header-logo">
+      </div>
+      <h1>Docker Learning Hub</h1>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="introduction.html">Introduction</a></li>
+          <li><a href="components.html">Components</a></li>
+          <li><a href="tutorials.html">Tutorials</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
+
+  <!-- Main Content Area -->
   <main>
-    <section>
-      <h2>Welcome to the Docker Learning Hub</h2>
-      <p>
-        This website is dedicated to teaching you about Docker—its fundamentals, core components, and how to build and manage containerized applications using Docker.
-      </p>
-      <p>
-        Use the navigation links above to explore the different sections.
-      </p>
+    <!-- Hero Section with a Brief Introduction and Call-to-Action -->
+    <section class="hero">
+      <div class="hero-content">
+        <h2>Welcome to the Docker Learning Hub</h2>
+        <p>
+          Your one-stop resource for mastering Docker, containerization, and modern application deployment.
+          Explore our in-depth tutorials, guides, and interactive labs to level up your Docker skills.
+        </p>
+        <a href="tutorials.html" class="btn">Start Learning</a>
+      </div>
+      <div class="hero-image">
+        <img src="images/docker-hero.jpg" alt="Docker in Action">
+      </div>
+    </section>
+
+    <!-- Docker Visual Section with a Larger Themed Image -->
+    <section class="docker-visual">
+      <div class="container">
+        <img src="images/docker-large.png" alt="Docker Engine" class="large-docker-img">
+        <p class="image-caption">Docker Engine powering modern applications</p>
+      </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="intro">
+      <div class="container">
+        <h3>About Docker</h3>
+        <p>
+          Docker is a powerful platform for building, sharing, and running containerized applications.
+          This hub is designed to help you harness Docker’s capabilities for efficient development, deployment, 
+          and scaling of modern applications.
+        </p>
+      </div>
+    </section>
+
+    <!-- Features / Learning Paths Section -->
+    <section class="features">
+      <div class="container">
+        <h3>What You'll Learn</h3>
+        <div class="feature-list">
+          <article class="feature">
+            <h4>Containerization Fundamentals</h4>
+            <p>Learn the basics of containerization and why Docker is at the heart of modern app development.</p>
+          </article>
+          <article class="feature">
+            <h4>Building Docker Images</h4>
+            <p>Discover best practices for creating efficient, secure, and reproducible Docker images.</p>
+          </article>
+          <article class="feature">
+            <h4>Docker Compose</h4>
+            <p>Manage multi-container applications with Docker Compose for streamlined development workflows.</p>
+          </article>
+          <article class="feature">
+            <h4>Orchestration & Beyond</h4>
+            <p>Explore how Docker integrates with orchestration tools like Kubernetes to scale your applications.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest News Section -->
+    <section class="latest-news">
+      <div class="container">
+        <h3>Latest Docker Updates</h3>
+        <ul>
+          <li><a href="news1.html">Docker 20.10 Released: New Features and Enhancements</a></li>
+          <li><a href="news2.html">Securing Docker Containers: Best Practices</a></li>
+          <li><a href="news3.html">Upcoming Webinar: Docker Deep Dive for Developers</a></li>
+        </ul>
+      </div>
     </section>
   </main>
+
+  <!-- Footer Section -->
   <footer>
-    <p>&copy; 2025 Docker Learning Hub</p>
+    <div class="footer-container">
+      <p>&copy; 2025 Docker Learning Hub. All rights reserved.</p>
+      <nav class="footer-nav">
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
   </footer>
 </body>
 </html>
