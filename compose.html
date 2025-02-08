@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docker Compose Tutorial</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Docker Learning Hub</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="introduction.html">Introduction</a></li>
+        <li><a href="components.html">Components</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <h2>Docker Compose: Orchestrating Multi-Container Applications</h2>
+      <p>
+        Learn how to define and manage multi-container applications using Docker Compose. This tutorial explains how to use a <code>docker-compose.yml</code> file to set up your environment.
+      </p>
+      <h3>Sample docker-compose.yml</h3>
+      <p>Create a file named <code>docker-compose.yml</code> with the following content:</p>
+      <pre><code class="yaml">
+version: "3.8"
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+  redis:
+    image: redis:alpine
+      </code></pre>
+      <h3>Running the Application</h3>
+      <p>Run this command to start your multi-container application:</p>
+      <pre><code class="bash">
+docker-compose up -d
+      </code></pre>
+      <p>
+        Docker Compose will create and run the defined containers. Use <code>docker-compose ps</code> to check the status of your services.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 Docker Learning Hub</p>
+  </footer>
+</body>
+</html>
