@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docker Swarm Tutorial</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Docker Learning Hub</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="introduction.html">Introduction</a></li>
+        <li><a href="components.html">Components</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <h2>Docker Swarm: Scaling and Rolling Updates</h2>
+      <p>
+        Docker Swarm mode allows you to cluster multiple Docker hosts and manage them as a single virtual system. In this tutorial, you'll learn how to deploy a stack, scale services, and perform rolling updates.
+      </p>
+      <h3>Initializing Docker Swarm</h3>
+      <p>First, initialize Docker Swarm on your manager node:</p>
+      <pre><code class="bash">
+docker swarm init
+      </code></pre>
+      <h3>Sample docker-compose.yml for Swarm</h3>
+      <p>Create a file named <code>docker-compose.yml</code> with the following content:</p>
+      <pre><code class="yaml">
+version: "3.8"
+services:
+  web:
+    image: nginx:1.19
+    ports:
+      - "80:80"
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+      </code></pre>
+      <h3>Deploying the Stack</h3>
+      <p>Deploy the stack using this command:</p>
+      <pre><code class="bash">
+docker stack deploy -c docker-compose.yml my_stack
+      </code></pre>
+      <p>
+        Your service will be deployed in a swarm with 3 replicas, and you can update it with minimal downtime using rolling updates.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 Docker Learning Hub</p>
+  </footer>
+</body>
+</html>
