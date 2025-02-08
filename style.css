@@ -1,6 +1,8 @@
-/* style.css */
-/* Docker Learning Hub Styling */
+/* ========================================================================
+   Docker Learning Hub Styling
+   ======================================================================== */
 
+/* Global Styles */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
@@ -9,7 +11,14 @@ body {
   color: #333;
 }
 
-/* Slide-in animation from the left */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+/* Animations */
 @keyframes slideInLeft {
   from {
     opacity: 0;
@@ -21,7 +30,6 @@ body {
   }
 }
 
-/* Title Glow Animation */
 @keyframes titleGlow {
   from {
     text-shadow: 0 0 0 rgba(0, 123, 255, 0);
@@ -31,7 +39,7 @@ body {
   }
 }
 
-/* Header Styling */
+/* Header & Navigation */
 header {
   background: linear-gradient(135deg, #0db7ed, #0078d7); /* Docker-themed blue gradient */
   color: #fff;
@@ -41,12 +49,28 @@ header {
   animation: slideInLeft 0.8s ease-out;
 }
 
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.logo {
+  margin-right: 10px;
+}
+
+.header-logo {
+  height: 50px; /* Compact logo for header */
+  width: auto;
+}
+
 header h1 {
   margin: 0;
+  font-size: 2em;
   animation: slideInLeft 0.8s ease-out, titleGlow 2s ease-in-out infinite alternate;
 }
 
-/* Navigation Styling */
 nav ul {
   list-style: none;
   padding: 0;
@@ -74,7 +98,7 @@ nav ul li a:hover {
   transform: scale(1.05);
 }
 
-/* Main Content Area */
+/* Main Content */
 main {
   padding: 40px 20px;
   max-width: 900px;
@@ -87,13 +111,161 @@ section {
   margin-bottom: 40px;
 }
 
-/* Headings Styling */
 h2, h3 {
   color: #0078d7; /* Docker blue */
   margin-bottom: 20px;
 }
 
-/* Article Styling */
+/* ========================================================================
+   Hero Section
+   ======================================================================== */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  background: #e8f4fc;
+  padding: 2em;
+  border-radius: 8px;
+  margin-bottom: 40px;
+}
+
+.hero-content {
+  flex: 1;
+  min-width: 300px;
+  padding: 1em;
+}
+
+.hero-content h2 {
+  margin-top: 0;
+}
+
+.hero-content p {
+  font-size: 1.1em;
+  line-height: 1.5;
+}
+
+.btn {
+  display: inline-block;
+  background-color: #0078d7;
+  color: #fff;
+  padding: 0.8em 1.5em;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-top: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #005fa3;
+}
+
+.hero-image {
+  flex: 1;
+  min-width: 300px;
+  text-align: center;
+  padding: 1em;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* ========================================================================
+   Docker Visual Section
+   ======================================================================== */
+.docker-visual {
+  text-align: center;
+  background: #fff;
+  padding: 2em 0;
+  border-radius: 8px;
+}
+
+.large-docker-img {
+  max-width: 90%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.image-caption {
+  margin-top: 0.5em;
+  font-style: italic;
+  color: #555;
+}
+
+/* ========================================================================
+   Intro Section
+   ======================================================================== */
+.intro {
+  background: #fff;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* ========================================================================
+   Features Section
+   ======================================================================== */
+.features {
+  background: #f4f4f4;
+  padding: 2em;
+  border-radius: 8px;
+}
+
+.feature-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.feature {
+  flex: 1;
+  min-width: 250px;
+  background: #fff;
+  padding: 1em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.feature:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+/* ========================================================================
+   Latest News Section
+   ======================================================================== */
+.latest-news {
+  background: #fff;
+  padding: 2em;
+  border-radius: 8px;
+}
+
+.latest-news ul {
+  list-style: none;
+  padding: 0;
+}
+
+.latest-news li {
+  padding: 0.5em 0;
+}
+
+.latest-news a {
+  text-decoration: none;
+  color: #0078d7;
+  transition: color 0.3s ease;
+}
+
+.latest-news a:hover {
+  color: #005fa3;
+}
+
+/* ========================================================================
+   Article Styling
+   ======================================================================== */
 article {
   background: #fff;
   border: 1px solid #dfe1e6;
@@ -109,13 +281,9 @@ article:hover {
   transform: translateY(-4px);
 }
 
-/* Tutorial Link Styling */
-.tutorial-link {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* Footer Styling */
+/* ========================================================================
+   Footer Styling
+   ======================================================================== */
 footer {
   background: #0078d7;
   color: #fff;
@@ -125,12 +293,34 @@ footer {
   animation: slideInLeft 0.8s ease-out;
 }
 
-/* Responsive Design Adjustments */
+.footer-nav ul {
+  list-style: none;
+  padding: 0;
+  display: inline-flex;
+  gap: 1em;
+  margin: 0.5em 0 0;
+}
+
+.footer-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+/* ========================================================================
+   Responsive Design Adjustments
+   ======================================================================== */
 @media (max-width: 768px) {
   nav ul {
     flex-direction: column;
   }
   nav ul li {
     margin: 10px 0;
+  }
+  .hero {
+    flex-direction: column;
+  }
+  .feature-list {
+    flex-direction: column;
   }
 }
