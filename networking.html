@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Managing Data and Networking with Docker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Docker Learning Hub</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="introduction.html">Introduction</a></li>
+        <li><a href="components.html">Components</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <h2>Managing Data and Networking with Docker</h2>
+      <p>
+        In this tutorial, you will learn about Docker’s networking modes and how to persist data using volumes. Key topics include:
+      </p>
+      <ul>
+        <li>Understanding Docker network modes (bridge, host, overlay)</li>
+        <li>Creating custom networks to link containers</li>
+        <li>Using volumes for persistent data storage</li>
+      </ul>
+      <h3>Creating a Custom Docker Network</h3>
+      <pre><code class="bash">
+# Create a new bridge network
+docker network create my-network
+
+# Run a container and connect it to the network
+docker run -d --name my-container --network my-network nginx:latest
+      </code></pre>
+      <h3>Using Docker Volumes</h3>
+      <p>Create and use a Docker volume for persistent storage:</p>
+      <pre><code class="bash">
+# Create a Docker volume
+docker volume create my-volume
+
+# Run a container using the volume
+docker run -d --name data-container -v my-volume:/data nginx:latest
+      </code></pre>
+      <p>
+        These practices help ensure reliable container communication and data persistence in your Docker environment.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 Docker Learning Hub</p>
+  </footer>
+</body>
+</html>
