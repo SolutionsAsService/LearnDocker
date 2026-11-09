@@ -14,6 +14,7 @@
   <h1>Swarm</h1>
   <p class="stamp"></p>
   <p class="lede">Swarm mode lets Docker run a service as several identical tasks and keep that number running. You describe the service and Docker does the rest.</p>
+  <p>Words used here: a <em>service</em> is the thing you ask Swarm to keep running; a <em>replica</em> (or <em>task</em>) is one running container of it; a <em>rolling update</em> swaps replicas to a new image a few at a time instead of all at once.</p>
   <div class="callout"><b>What was tested</b>Everything on this page ran on a swarm of one machine, which is enough to see the commands and their effect. Joining other machines uses the worker token that <code>docker swarm init</code> prints; we did not test a multi-machine swarm. Swarm is Docker's own orchestrator; many teams use Kubernetes instead, which this site does not cover.</div>
 
   <h2>Start a swarm and a service</h2>

@@ -14,7 +14,7 @@
 <main id="main" class="wrap hero">
   <div class="hero-top">
     <h1>Learn <span class="brk">Docker</span></h1>
-    <p class="lede"><span class="long">An image is a stack of layers, and a build reuses the steps whose inputs did not change. Change something below and see what Docker reuses and what it runs again. These are measurements from real builds, not an animation.</span><span class="short">An image is a stack of layers. Change something and see what a build reuses. Measured from real builds.</span></p>
+    <p class="lede"><span class="long">Docker packages a program and everything it needs into an image, then runs it as a container. An image is a stack of layers (sets of file changes), and a build reuses the steps whose inputs did not change. Change something below and see what Docker reuses and what it runs again. These are measurements from real builds, not an animation.</span><span class="short">An image is a stack of layers. Change something and see what a build reuses. Measured from real builds.</span></p>
   </div>
 
   <div class="stage" id="stage">
@@ -29,13 +29,15 @@
         <ol class="layers" id="layers" aria-label="The image's layers, top first"></ol>
       </div>
     </div>
-    <p class="readout" id="readout" aria-live="polite"></p>
+    <p class="readout" id="readout"></p>
+    <p class="sr" id="announce" role="status" aria-live="polite"></p>
+    <div class="tblwrap" tabindex="0" role="region" aria-label="All five builds side by side"><table class="t grid" id="grid"></table></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <button type="button" class="btn ghost" id="run" aria-pressed="false">Run a container from it</button>
+      <button type="button" class="btn ghost" id="run">Run a container from it</button>
       <a class="btn" href="concepts.html">Run your first container</a>
       <a class="btn ghost" href="dockerfile.html">Build this image yourself</a>
     </div>
-    <p class="fine">The tabs show real builds of the Dockerfile in <a href="lab/hello-node/Dockerfile">lab/hello-node</a> on Docker <span data-fig="docker">&ndash;</span>, <span data-fig="date">&ndash;</span>. Bars are drawn to scale in bytes (linear), so the base image dwarfs everything else. Times are what the build printed; they vary by machine. <a href="about.html">How this is checked</a></p>
+    <p class="fine">The tabs show real builds of the Dockerfile in <a href="lab/hello-node/Dockerfile">lab/hello-node</a> on Docker <span data-fig="docker">&ndash;</span>, <span data-fig="date">&ndash;</span>. Bars are proportional to bytes (linear), with a minimum width so a few hundred bytes stay visible, so the base image dwarfs everything else. Times are what the build printed; they vary by machine. <a href="about.html">How this is checked</a></p>
   </div>
 
   <ul class="chapters" id="chapters" aria-label="Chapters"></ul>

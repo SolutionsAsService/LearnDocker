@@ -52,7 +52,11 @@ for (const f of fs.readdirSync(path.join(root, 'assets')).filter((x) => x.endsWi
 const lessons = JSON.parse(read('data/lessons.json'))
 for (const l of lessons) {
   if (!l.id || !l.steps?.length) bad(`lesson ${l.id}: no steps`)
-  for (const s of l.steps) if (!s.cmd || !s.expect) bad(`lesson ${l.id}: a step has no cmd or expect`)
+  for (const s of l.steps) {
+    if (!s.cmd || !s.expect) { bad(`lesson ${l.id}: a step has no cmd or expect`); continue }
+    // the output printed on the page must itself satisfy the step's expectation (unless it was filtered with show/tail)
+    if (s.out && !s.show && !s.tail && !new RegExp(s.expect, 'm').test(s.out)) bad(`lesson ${l.id}: printed output of \`${s.cmd}\` does not match /${s.expect}/`)
+  }
 }
 
 // ---------------------------------------------------------------- docker runs

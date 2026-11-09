@@ -56,16 +56,29 @@ LD.boot('home', function (G) {
       rows.push('<li class="' + st.state + '"><span>' + esc(st.text) + '<br><small>' + (st.state === 'cached' ? 'reused from cache' : 'ran again' + secs(st)) + '</small></span><span>' + G.fmtBytes(layerOf[n]) + '</span><span class="meter"><i style="width:' + w.toFixed(2) + '%"></i></span></li>');
     });
     var b = stepFor(s, 1), bchanged = b && stepFor(first, 1) && b.text !== stepFor(first, 1).text;
-    rows.push('<li class="base' + (bchanged ? ' rebuilt' : '') + '"><span>' + esc(b ? b.text : 'FROM') + '<br><small>' + (bchanged ? 'a different base image' : 'base image, already on this machine') + ' · ' + M.layers.filter(function (l, k) { return k < i; }).length + ' layers</small></span><span>' + G.fmtBytes(baseBytes) + '</span><span class="meter"><i style="width:' + (100 * baseBytes / total).toFixed(2) + '%"></i></span></li>');
+    rows.push('<li class="base' + (bchanged ? ' rebuilt' : '') + '"><span>' + esc(b ? b.text : 'FROM') + '<br><small>' + (bchanged ? 'a different base image' : 'base image, already on this machine; a first pull downloads it') + ' · ' + M.layers.filter(function (l, k) { return k < i && l.bytes > 0; }).length + ' layers that add data</small></span><span>' + G.fmtBytes(baseBytes) + '</span><span class="meter"><i style="width:' + (100 * baseBytes / total).toFixed(2) + '%"></i></span></li>');
     $('#layers').innerHTML = rows.join('');
     // Readout
     var ran = s.steps.filter(function (x) { return x.state === 'rebuilt' && x.n > 1; }), n5 = s.steps.filter(function (x) { return x.n > 1; }).length;
-    var tsum = s.steps.reduce(function (a, x) { return a + (x.secs || 0); }, 0);
+    var tsum = s.steps.reduce(function (a, x) { return a + (x.n > 1 ? x.secs || 0 : 0); }, 0);
     var ranAll = s.steps.filter(function (x) { return x.state === 'rebuilt' || (x.n === 1 && bchanged); }).length;
     var msg = '<b>' + esc(LABEL[s.id]) + ': ' + ran.length + ' of ' + n5 + ' build steps after FROM ran again, ' + tsum.toFixed(1) + ' s in total.</b> ' + EXPLAIN[s.id];
     if (running) msg += ' A running container adds one thin writable layer on top. It is ' + esc(M.containerSize.split(' ')[0]) + ' when it starts, and the layers under it are read-only and shared by every container made from the image. EXPOSE and CMD only record settings, so they add no layer and take no time.';
     $('#readout').innerHTML = msg;
+    $('#announce').textContent = LABEL[s.id] + ': ' + ran.length + ' of ' + n5 + ' build steps after FROM ran again.' + (running ? ' A container is running on top.' : '');
   }
+
+  // All five builds side by side: one cell per build step, from the same measurements
+  (function () {
+    var cols = scen[0].steps.filter(function (x) { return x.n > 1; });
+    var h = '<caption>All five builds at once: R = ran again, – = reused from cache</caption><thead><tr><th scope="col">You changed</th>' + cols.map(function (c) { return '<th scope="col"><code>' + esc(c.text.replace(/^(COPY|RUN|WORKDIR)\s+/, '$1 ')) + '</code></th>'; }).join('') + '<th scope="col" style="text-align:right">Time</th></tr></thead><tbody>';
+    h += scen.map(function (s) {
+      var t = 0;
+      var cells = cols.map(function (c) { var x = stepFor(s, c.n); var ran = x && x.state === 'rebuilt'; if (ran) t += x.secs || 0; return '<td class="' + (ran ? 'gr' : 'gc') + '">' + (ran ? 'R' : '&ndash;') + '</td>'; }).join('');
+      return '<tr><th scope="row">' + esc(LABEL[s.id]) + '</th>' + cells + '<td style="text-align:right">' + t.toFixed(1) + ' s</td></tr>';
+    }).join('');
+    $('#grid').innerHTML = h + '</tbody>';
+  })();
 
   $('#tabs').addEventListener('click', function (e) {
     var b = e.target.closest('button[data-s]'); if (!b) return;
@@ -73,7 +86,7 @@ LD.boot('home', function (G) {
     G.$$('#tabs button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
     draw();
   });
-  $('#run').addEventListener('click', function (e) { running = !running; e.currentTarget.setAttribute('aria-pressed', String(running)); e.currentTarget.textContent = running ? 'Remove the container' : 'Run a container from it'; draw(); });
+  $('#run').addEventListener('click', function (e) { running = !running; e.currentTarget.textContent = running ? 'Remove the container' : 'Run a container from it'; draw(); });
 
   // chapters, each with a figure computed from the data
   var L = G.byId, cmds = G.lessons.reduce(function (n, l) { return n + l.steps.length; }, 0);

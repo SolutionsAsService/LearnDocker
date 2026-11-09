@@ -7,7 +7,7 @@
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #101417; --paper: #181d21; --ink: #e9edf0; --ink2: #a3afb9; --rule: #2f383f; --focus: #e9edf0; --reuse: #6fb0d4; --ran: #ff8a54; --on-fill: #101417; --code-bg: #0a0d0f; --code-ink: #e6ebef; }
+  :root { --bg: #101417; --paper: #181d21; --ink: #e9edf0; --ink2: #a3afb9; --rule: #2f383f; --focus: #e9edf0; --reuse: #4f8fb3; --ran: #e0662f; --on-fill: #101417; --code-bg: #0a0d0f; --code-ink: #e6ebef; }
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -58,7 +58,7 @@ table.t th { font: 700 .72rem var(--mono); text-transform: uppercase; letter-spa
 /* transcripts and files */
 .step { margin: 18px 0 22px; }
 .step .note { margin: 0 0 6px; color: var(--ink2); font-size: .95rem; }
-.term, .file { background: var(--code-bg); color: var(--code-ink); border-radius: 4px; overflow: hidden; position: relative; font: .84rem/1.5 var(--mono); }
+.term, .file { background: var(--code-bg); color: var(--code-ink); border-radius: 0; overflow: hidden; position: relative; font: .84rem/1.5 var(--mono); }
 .term .cmd { display: block; padding: 10px 16px 8px 16px; padding-right: 88px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .term .cmd::before { content: "$ "; color: var(--code-ok); }
 .term .out { margin: 0; padding: 0 16px 12px; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--code-dim); border-top: 1px solid #263038; padding-top: 8px; }
@@ -75,7 +75,7 @@ table.t th { font: 700 .72rem var(--mono); text-transform: uppercase; letter-spa
 @media (min-width: 880px) { .hero-top { grid-template-columns: auto 1fr; } .hero .lede { justify-self: end; margin: 0; } }
 .stage { border: 3px solid var(--ink); background: var(--paper); margin-top: 14px; padding: 10px; }
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
-.tabs button { font: 700 .76rem var(--mono); letter-spacing: .05em; text-transform: uppercase; background: transparent; color: var(--ink); border: 2px solid var(--ink); padding: 6px 12px; min-height: 40px; cursor: pointer; }
+.tabs button { font: 700 .76rem var(--mono); letter-spacing: .05em; text-transform: uppercase; background: transparent; color: var(--ink); border: 2px solid var(--ink); padding: 6px 12px; min-height: 44px; cursor: pointer; }
 .tabs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 .build { display: grid; gap: 14px; grid-template-columns: 1fr; }
 @media (min-width: 860px) { .build { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
@@ -93,8 +93,11 @@ table.t th { font: 700 .72rem var(--mono); text-transform: uppercase; letter-spa
 .layers .meter { grid-column: 1 / -1; height: 6px; background: rgba(255, 255, 255, .28); position: relative; }
 .layers .meter i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--on-fill); }
 .layers li.run .meter { display: none; }
-.layers small { font-weight: 400; opacity: .95; }
+.layers small { font-size: .75rem; font-weight: 400; opacity: .95; }
 .readout { margin: 10px 2px 0; min-height: 3.2em; }
+.grid caption { text-align: left; font: 700 .72rem var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink2); padding: 8px 0; }
+.grid td.gr { background: var(--ran); color: var(--on-fill); font-weight: 700; text-align: center; }
+.grid td.gc { background: var(--reuse); color: var(--on-fill); text-align: center; }
 .fine { font-size: .8rem; color: var(--ink2); margin: 6px 2px 0; }
 .chapters { display: grid; gap: 10px; grid-template-columns: repeat(2, 1fr); margin: 18px 0 0; list-style: none; padding: 0; }
 @media (min-width: 700px) { .chapters { grid-template-columns: repeat(4, 1fr); } }

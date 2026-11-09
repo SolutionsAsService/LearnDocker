@@ -245,7 +245,7 @@
       {
         "cmd": "docker service update --detach --image nginx:1.28-alpine web",
         "expect": "^web$",
-        "note": "Swarm replaces tasks one at a time (parallelism 1 by default), so the service keeps answering.",
+        "note": "Swarm replaces tasks in turns (parallelism 1 by default). Requests were not sent during the update, so reachability is not shown.",
         "out": "web"
       },
       {

@@ -36,7 +36,7 @@
 
   function copyBtn(text) {
     var b = document.createElement('button');
-    b.type = 'button'; b.className = 'copy'; b.textContent = 'Copy'; b.setAttribute('aria-label', 'Copy to clipboard');
+    b.type = 'button'; b.className = 'copy'; b.textContent = 'Copy'; b.setAttribute('aria-label', 'Copy: ' + String(text).split('\n')[0].slice(0, 70));
     b.addEventListener('click', function () {
       var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1500); };
       if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () { b.textContent = 'Select and copy'; }); else b.textContent = 'Select and copy';

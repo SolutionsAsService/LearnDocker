@@ -37,8 +37,8 @@
 
   <h2>Why the order of the lines matters</h2>
   <p>Docker keeps the result of every build step. On the next build it reuses a step if the instruction and the files it copies are unchanged, and if every step before it was reused. After the first step that changes, every later step runs again. We changed one thing at a time and recorded what the build did:</p>
-  <div class="tblwrap"><table class="t" id="scen"><thead><tr><th scope="col">You changed</th><th scope="col">Steps that ran again</th><th scope="col" style="text-align:right">Time</th></tr></thead><tbody></tbody></table></div>
-  <p>That is why the Dockerfile copies <code>package.json</code> and installs <em>before</em> it copies the rest of your code. Your source changes often and your dependencies rarely. With this order, editing <code>server.js</code> reuses the install. If the Dockerfile did a single <code>COPY . .</code> before <code>npm install</code>, every edit would run the install again.</p>
+  <div class="tblwrap" tabindex="0" role="region" aria-label="Measured cache table, scrolls sideways on narrow screens"><table class="t" id="scen"><thead><tr><th scope="col">You changed</th><th scope="col">Steps that ran again</th><th scope="col" style="text-align:right">Time</th></tr></thead><tbody></tbody></table></div>
+  <p>That is why the Dockerfile copies <code>package.json</code> and installs <em>before</em> it copies the rest of your code. Your source changes often and your dependencies rarely. With this order, editing <code>server.js</code> reuses the install. If the Dockerfile did a single <code>COPY . .</code> before <code>npm install</code>, the rule above says every edit would run the install again (we did not build that variant).</p>
   <p>The <a href="index.html">home page</a> draws the same measurements on the layers.</p>
 
   <div class="next"><a href="concepts.html">&larr; Concepts</a><a href="compose.html">Next: Compose &rarr;</a></div>

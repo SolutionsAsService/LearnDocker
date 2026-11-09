@@ -25,7 +25,7 @@
       <tr><th scope="row">Run on</th><td><span data-fig="date">&ndash;</span></td></tr>
     </tbody>
   </table></div>
-  <p>Docker Desktop on another operating system may differ in details such as file sharing and published ports.</p>
+  <p>Everything ran on Linux. Docker Desktop on Windows or macOS runs the daemon in a virtual machine, so a port published with <code>-p</code> is reached at <code>localhost</code> through that machine, and a folder bind-mounted into a container is shared from your computer. We did not test either there. The commands also assume a bash shell (see the note on the Concepts page).</p>
 
   <h2>What is checked, and how</h2>
   <ul>
