@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How this is checked | Learn Docker</title>
+  <meta name="description" content="Who runs this site, the Docker version everything was run on, how the commands and measurements are checked, and what is not covered.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-page="about">
+<main id="main" class="wrap page prose">
+  <p class="kicker">About</p>
+  <h1>How this is checked</h1>
+  <p class="stamp"></p>
+  <p class="lede">An unofficial guide to Docker. It is not affiliated with Docker, Inc., and it is not a substitute for the <a href="https://docs.docker.com/">Docker documentation</a>.</p>
+
+  <h2>The environment</h2>
+  <div class="tblwrap"><table class="t">
+    <tbody>
+      <tr><th scope="row">Docker Engine</th><td><span data-fig="docker">&ndash;</span></td></tr>
+      <tr><th scope="row">Docker Compose</th><td><span data-fig="compose">&ndash;</span></td></tr>
+      <tr><th scope="row">Base image</th><td><span data-fig="base">&ndash;</span></td></tr>
+      <tr><th scope="row">Architecture</th><td><span data-fig="arch">&ndash;</span></td></tr>
+      <tr><th scope="row">Run on</th><td><span data-fig="date">&ndash;</span></td></tr>
+    </tbody>
+  </table></div>
+  <p>Docker Desktop on another operating system may differ in details such as file sharing and published ports.</p>
+
+  <h2>What is checked, and how</h2>
+  <ul>
+    <li><strong>Commands.</strong> Every command on the site is in <code>data/lessons.json</code>. <code>node scripts/check.mjs</code> runs them against a real Docker daemon, in a fresh folder, and fails if one exits with an error or does not print what the lesson says it prints. <code>node scripts/check.mjs --update</code> rewrites the output shown on the pages from that run.</li>
+    <li><strong>Measurements.</strong> The reuse figures on the home page and the table on the Images page come from real builds: the script builds the app, changes one thing, builds again and records which steps the build marked as cached. The layer sizes come from <code>docker history</code>. The gate fails if the measurements stop supporting the lesson's claim (for example, that editing <code>server.js</code> leaves <code>npm install</code> reused).</li>
+    <li><strong>Links.</strong> The script fails on any internal link that points nowhere, on any external font or script, and on a short list of phrases the first review of this site turned up.</li>
+    <li><strong>Claims.</strong> A statement about how Docker behaves is either something the page shows being run, or it says so ("we did not run that form here"). Times vary by machine, and image sizes depend on the base image version.</li>
+  </ul>
+
+  <h2>What is not covered</h2>
+  <p>Kubernetes, Docker Desktop, Windows containers, image security scanning, multi-stage builds, build secrets, registries other than Docker Hub, and a swarm of more than one machine. Pulling images and installing packages inside a build need network access, which the check machine had only for pulling images; that is why the lab app has no dependencies to install.</p>
+
+  <h2>What changed from the first version</h2>
+  <p>The first version had seven links to pages that did not exist, a news list with no sources, and a promise of labs that did not exist. Its Dockerfile lesson built an image whose container exited at once because the app it named was never provided. Its Compose lesson used the <code>docker-compose</code> command, which a current Docker install does not have. Its sample app claimed its database service would be waited for, when the setting it used only orders start-up. Those were measured by running them. The lessons were rewritten, the sample app was replaced by the dependency-free lab app, and the news list was removed.</p>
+
+  <h2>Mistakes</h2>
+  <p>If something is wrong or out of date, <a href="https://github.com/SolutionsAsService/LearnDocker/issues">open an issue</a> with your Docker version. The code and text are licensed MIT; see <a href="LICENSE">LICENSE</a>.</p>
+</main>
+<noscript><p class="notice wrap">The version figures on this page are filled in from <a href="data/verified.json">data/verified.json</a> with JavaScript.</p></noscript>
+<script src="assets/common.js"></script>
+<script src="assets/static.js"></script>
+</body>
+</html>

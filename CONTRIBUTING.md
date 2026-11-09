@@ -21,7 +21,7 @@ cd LearnDocker
 npx serve .
 ```
 
-Then open the printed localhost URL. Keep links relative so the site still deploys from any host.
+Then open the printed localhost URL. Before sending a change to a lesson, run `node scripts/check.mjs` (it needs a Docker daemon; `--static` skips the Docker runs). Keep links relative so the site still deploys from any host.
 
 ## Making a change
 

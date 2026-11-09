@@ -2,70 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Creating a Dockerfile and Building Images</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Images: write a Dockerfile and build it | Learn Docker</title>
+  <meta name="description" content="Write a small Dockerfile, build the image, run it, and see from real builds which steps the cache reuses.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-  <header>
-    <h1>Docker Learning Hub</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="tutorials.html">Tutorials</a></li>
-        <li><a href="introduction.html">Introduction</a></li>
-        <li><a href="components.html">Components</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <section>
-      <h2>Creating a Dockerfile and Building Images</h2>
-      <p>
-        In this tutorial, you will learn how to create a Dockerfile to containerize your application. Topics include:
-      </p>
-      <ul>
-        <li>Writing a Dockerfile with best practices</li>
-        <li>Building an image using <code>docker build</code></li>
-        <li>Tagging and running the resulting image</li>
-      </ul>
-      <h3>Sample Dockerfile</h3>
-      <p>Create a file named <code>Dockerfile</code> with the following content:</p>
-      <pre><code class="dockerfile">
-# Use an official Node.js image as the base
-FROM node:14-alpine
+<body data-page="dockerfile">
+<main id="main" class="wrap page prose">
+  <p class="kicker">Chapter 2</p>
+  <h1>Images</h1>
+  <p class="stamp"></p>
+  <p class="lede">A Dockerfile is a recipe for an image. Build one for a small web server, run it, and then see why the order of its lines decides how fast the next build is.</p>
 
-# Set the working directory
-WORKDIR /usr/src/app
+  <h2>The app, and the Dockerfile</h2>
+  <p>Make a folder with these four files (the last, <code>.dockerignore</code>, starts with a dot and lists what <code>COPY . .</code> should leave out). The server has no dependencies, so building it needs nothing from the internet except the base image. The files are the ones in this site's <a href="lab/hello-node/">lab/hello-node</a> folder, shown here as they are.</p>
+  <div data-file="lab/hello-node/server.js"></div>
+  <div data-file="lab/hello-node/package.json"></div>
+  <div data-file="lab/hello-node/Dockerfile"></div>
+  <p>Each instruction does one thing:</p>
+  <ul>
+    <li><code>FROM</code> picks the base image everything else is built on.</li>
+    <li><code>WORKDIR</code> sets the folder later instructions run in, and creates it.</li>
+    <li><code>COPY</code> copies files from your folder into the image. <code>RUN</code> runs a command while building and keeps the result.</li>
+    <li><code>EXPOSE</code> and <code>CMD</code> only record settings: which port the app uses, and what to run when a container starts. They add no files.</li>
+  </ul>
+  <p>The <code>.dockerignore</code> file lists what <code>COPY</code> must leave out of the image.</p>
+  <div data-file="lab/hello-node/.dockerignore" data-name=".dockerignore"></div>
 
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm install
+  <h2>Build it, run it</h2>
+  <div data-lesson="build-image"></div>
+  <p>The last box is the image's layers, newest first. <code>COPY . .</code> added <span data-fig="copybytes">&ndash;</span>, <code>npm install</code> <span data-fig="npmbytes">&ndash;</span>, and the base image underneath is most of the <span data-fig="image">&ndash;</span> image.</p>
+  <div class="callout"><b>If the container exits at once</b>Run <code>docker ps -a</code> to see its status and <code>docker logs NAME</code> for the reason. One cause is that the file named in <code>CMD</code> was never copied into the image.</div>
 
-# Copy the rest of the application code
-COPY . .
+  <h2>Why the order of the lines matters</h2>
+  <p>Docker keeps the result of every build step. On the next build it reuses a step if the instruction and the files it copies are unchanged, and if every step before it was reused. After the first step that changes, every later step runs again. We changed one thing at a time and recorded what the build did:</p>
+  <div class="tblwrap"><table class="t" id="scen"><thead><tr><th scope="col">You changed</th><th scope="col">Steps that ran again</th><th scope="col" style="text-align:right">Time</th></tr></thead><tbody></tbody></table></div>
+  <p>That is why the Dockerfile copies <code>package.json</code> and installs <em>before</em> it copies the rest of your code. Your source changes often and your dependencies rarely. With this order, editing <code>server.js</code> reuses the install. If the Dockerfile did a single <code>COPY . .</code> before <code>npm install</code>, every edit would run the install again.</p>
+  <p>The <a href="index.html">home page</a> draws the same measurements on the layers.</p>
 
-# Expose the port your app runs on
-EXPOSE 3000
-
-# Start the application
-CMD [ "node", "server.js" ]
-      </code></pre>
-      <h3>Building and Running the Image</h3>
-      <pre><code class="bash">
-# Build the Docker image and tag it as "my-node-app"
-docker build -t my-node-app .
-
-# Run the container mapping port 3000
-docker run -d -p 3000:3000 my-node-app
-      </code></pre>
-      <p>
-        By following these steps, you'll be able to containerize your Node.js application using Docker.
-      </p>
-    </section>
-  </main>
-  <footer>
-    <p>&copy; 2025 Docker Learning Hub</p>
-  </footer>
+  <div class="next"><a href="concepts.html">&larr; Concepts</a><a href="compose.html">Next: Compose &rarr;</a></div>
+</main>
+<noscript><p class="notice wrap">The files and command output on this page are loaded with JavaScript from the <a href="lab/hello-node/">lab folder</a> and <a href="data/lessons.json">data/lessons.json</a>.</p></noscript>
+<script src="assets/common.js"></script>
+<script src="assets/dockerfile.js"></script>
 </body>
 </html>

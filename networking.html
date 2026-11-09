@@ -2,57 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Managing Data and Networking with Docker</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Networks and volumes | Learn Docker</title>
+  <meta name="description" content="Why containers find each other by name only on a network you create, and how a volume keeps data after its container is gone.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-  <header>
-    <h1>Docker Learning Hub</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="tutorials.html">Tutorials</a></li>
-        <li><a href="introduction.html">Introduction</a></li>
-        <li><a href="components.html">Components</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <section>
-      <h2>Managing Data and Networking with Docker</h2>
-      <p>
-        In this tutorial, you will learn about Docker’s networking modes and how to persist data using volumes. Key topics include:
-      </p>
-      <ul>
-        <li>Understanding Docker network modes (bridge, host, overlay)</li>
-        <li>Creating custom networks to link containers</li>
-        <li>Using volumes for persistent data storage</li>
-      </ul>
-      <h3>Creating a Custom Docker Network</h3>
-      <pre><code class="bash">
-# Create a new bridge network
-docker network create my-network
+<body data-page="networking">
+<main id="main" class="wrap page prose">
+  <p class="kicker">Chapter 4</p>
+  <h1>Networks and volumes</h1>
+  <p class="stamp"></p>
+  <p class="lede">Two questions come up in every real project: how does one container reach another, and where does data live when containers come and go?</p>
 
-# Run a container and connect it to the network
-docker run -d --name my-container --network my-network nginx:latest
-      </code></pre>
-      <h3>Using Docker Volumes</h3>
-      <p>Create and use a Docker volume for persistent storage:</p>
-      <pre><code class="bash">
-# Create a Docker volume
-docker volume create my-volume
+  <h2>Finding another container</h2>
+  <p>First start a container called <code>server</code> on Docker's default network and try to reach it by name from another container:</p>
+  <div data-lesson="networks" data-steps="0-1"></div>
+  <p>The name did not resolve. Now create a network of your own and put a container on it:</p>
+  <div data-lesson="networks" data-steps="2-5"></div>
+  <p>On a network you create, Docker answers name lookups with the address of the container that has that name. That is what let <code>probe</code> find <code>web</code> in the <a href="compose.html">Compose chapter</a>: Compose creates such a network for each project.</p>
+  <p>Separately, <code>-p 3000:3000</code> (as in the <a href="dockerfile.html">images chapter</a>) publishes a container's port on your own machine so you can reach it from outside Docker. Containers on the same network do not need it to reach each other.</p>
 
-# Run a container using the volume
-docker run -d --name data-container -v my-volume:/data nginx:latest
-      </code></pre>
-      <p>
-        These practices help ensure reliable container communication and data persistence in your Docker environment.
-      </p>
-    </section>
-  </main>
-  <footer>
-    <p>&copy; 2025 Docker Learning Hub</p>
-  </footer>
+  <h2>Keeping data</h2>
+  <p>Files a container writes go into its own writable layer, and they are deleted when the container is removed. A volume is storage managed by Docker that you attach to a container at a path.</p>
+  <div data-lesson="volumes"></div>
+  <p>The file written by the first container was there for the second, because both mounted the volume <code>notes</code>. A container that did not mount it saw nothing. Databases, uploads and anything else you cannot afford to lose belong in a volume, or in a folder you mount from your machine (a bind mount, written <code>-v ./folder:/data</code>; we did not run that form here).</p>
+
+  <div class="next"><a href="compose.html">&larr; Compose</a><a href="swarm.html">Next: Swarm &rarr;</a></div>
+</main>
+<noscript><p class="notice wrap">The command output on this page is loaded with JavaScript from <a href="data/lessons.json">data/lessons.json</a>.</p></noscript>
+<script src="assets/common.js"></script>
+<script src="assets/static.js"></script>
 </body>
 </html>

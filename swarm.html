@@ -2,62 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Docker Swarm Tutorial</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Swarm: replicas and a rolling update | Learn Docker</title>
+  <meta name="description" content="Run a service as three copies, scale it to five, and update its image one copy at a time, on a one-machine swarm.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-  <header>
-    <h1>Docker Learning Hub</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="tutorials.html">Tutorials</a></li>
-        <li><a href="introduction.html">Introduction</a></li>
-        <li><a href="components.html">Components</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <section>
-      <h2>Docker Swarm: Scaling and Rolling Updates</h2>
-      <p>
-        Docker Swarm mode allows you to cluster multiple Docker hosts and manage them as a single virtual system. In this tutorial, you'll learn how to deploy a stack, scale services, and perform rolling updates.
-      </p>
-      <h3>Initializing Docker Swarm</h3>
-      <p>First, initialize Docker Swarm on your manager node:</p>
-      <pre><code class="bash">
-docker swarm init
-      </code></pre>
-      <h3>Sample docker-compose.yml for Swarm</h3>
-      <p>Create a file named <code>docker-compose.yml</code> with the following content:</p>
-      <pre><code class="yaml">
-version: "3.8"
-services:
-  web:
-    image: nginx:1.19
-    ports:
-      - "80:80"
-    deploy:
-      replicas: 3
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
-      </code></pre>
-      <h3>Deploying the Stack</h3>
-      <p>Deploy the stack using this command:</p>
-      <pre><code class="bash">
-docker stack deploy -c docker-compose.yml my_stack
-      </code></pre>
-      <p>
-        Your service will be deployed in a swarm with 3 replicas, and you can update it with minimal downtime using rolling updates.
-      </p>
-    </section>
-  </main>
-  <footer>
-    <p>&copy; 2025 Docker Learning Hub</p>
-  </footer>
+<body data-page="swarm">
+<main id="main" class="wrap page prose">
+  <p class="kicker">Chapter 5</p>
+  <h1>Swarm</h1>
+  <p class="stamp"></p>
+  <p class="lede">Swarm mode lets Docker run a service as several identical tasks and keep that number running. You describe the service and Docker does the rest.</p>
+  <div class="callout"><b>What was tested</b>Everything on this page ran on a swarm of one machine, which is enough to see the commands and their effect. Joining other machines uses the worker token that <code>docker swarm init</code> prints; we did not test a multi-machine swarm. Swarm is Docker's own orchestrator; many teams use Kubernetes instead, which this site does not cover.</div>
+
+  <h2>Start a swarm and a service</h2>
+  <div data-lesson="swarm" data-steps="0-2"></div>
+  <p>The <code>3/3</code> means three tasks are running out of the three you asked for. Each task is one container.</p>
+
+  <h2>Scale it, then update it</h2>
+  <div data-lesson="swarm" data-steps="3-5"></div>
+  <p>The last box lists the running tasks. All five now use the new image, and their start times differ by several seconds: Swarm replaced them in turns instead of all at once. We did not send requests during the update, so this page does not show whether the service stayed reachable. You can change how many it replaces together and how long it waits between them with options on <code>docker service update</code> (<code>--update-parallelism</code> and <code>--update-delay</code>; we did not run those options).</p>
+  <p>When you are done, <code>docker service rm web</code> removes the service and <code>docker swarm leave --force</code> takes this machine out of the swarm.</p>
+
+  <div class="next"><a href="networking.html">&larr; Networks and volumes</a><a href="commands.html">Next: every command &rarr;</a></div>
+</main>
+<noscript><p class="notice wrap">The command output on this page is loaded with JavaScript from <a href="data/lessons.json">data/lessons.json</a>.</p></noscript>
+<script src="assets/common.js"></script>
+<script src="assets/static.js"></script>
 </body>
 </html>

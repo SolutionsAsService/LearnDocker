@@ -2,52 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Docker Compose Tutorial</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compose: several containers from one file | Learn Docker</title>
+  <meta name="description" content="Describe two containers in one file, start them together, and watch one wait for the other and reach it by name.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-  <header>
-    <h1>Docker Learning Hub</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="tutorials.html">Tutorials</a></li>
-        <li><a href="introduction.html">Introduction</a></li>
-        <li><a href="components.html">Components</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <section>
-      <h2>Docker Compose: Orchestrating Multi-Container Applications</h2>
-      <p>
-        Learn how to define and manage multi-container applications using Docker Compose. This tutorial explains how to use a <code>docker-compose.yml</code> file to set up your environment.
-      </p>
-      <h3>Sample docker-compose.yml</h3>
-      <p>Create a file named <code>docker-compose.yml</code> with the following content:</p>
-      <pre><code class="yaml">
-version: "3.8"
-services:
-  web:
-    image: nginx:latest
-    ports:
-      - "80:80"
-  redis:
-    image: redis:alpine
-      </code></pre>
-      <h3>Running the Application</h3>
-      <p>Run this command to start your multi-container application:</p>
-      <pre><code class="bash">
-docker-compose up -d
-      </code></pre>
-      <p>
-        Docker Compose will create and run the defined containers. Use <code>docker-compose ps</code> to check the status of your services.
-      </p>
-    </section>
-  </main>
-  <footer>
-    <p>&copy; 2025 Docker Learning Hub</p>
-  </footer>
+<body data-page="compose">
+<main id="main" class="wrap page prose">
+  <p class="kicker">Chapter 3</p>
+  <h1>Compose</h1>
+  <p class="stamp"></p>
+  <p class="lede">Real applications are several containers. Compose describes them in one file and starts, stops and removes them together.</p>
+
+  <h2>The file</h2>
+  <p>Make a folder named <code>demo</code> containing the <a href="dockerfile.html">hello-node app from the last chapter</a> in a folder called <code>hello-node</code>, and this file next to it.</p>
+  <div data-extra="compose-two:compose.yaml"></div>
+  <ul>
+    <li><code>web</code> is built from the Dockerfile in <code>./hello-node</code> and publishes port 3000. Its <code>healthcheck</code> runs a command inside the container every two seconds and marks it <em>healthy</em> when the command succeeds.</li>
+    <li><code>probe</code> is an <code>alpine</code> container that fetches a page from <code>http://web:3000</code>, then exits.</li>
+    <li><code>depends_on</code> with <code>condition: service_healthy</code> makes <code>probe</code> wait until <code>web</code> is healthy. A plain <code>depends_on</code> only controls the order of starting, not whether the first service is ready.</li>
+  </ul>
+
+  <h2>Start it</h2>
+  <p>The command is <code>docker compose</code>, with a space.</p>
+  <div data-lesson="compose-two" data-steps="0-3"></div>
+  <p><code>probe</code> printed a page from <code>web</code> without being given an address. Compose put both services on a network it created, and on that network a service's name is its address. The <a href="networking.html">next chapter</a> shows why that works.</p>
+
+  <h2>Older tutorials</h2>
+  <p>Two things in older tutorials no longer apply. The first is the command <code>docker-compose</code> (with a hyphen), the first generation of Compose. It is not part of a current Docker install; on the machine used here it does not exist, and <code>docker compose</code> does. The second is the <code>version:</code> line at the top of the file:</p>
+  <div data-extra="compose-two:old-style.yaml"></div>
+  <div data-lesson="compose-two" data-steps="4-4"></div>
+
+  <div class="next"><a href="dockerfile.html">&larr; Images</a><a href="networking.html">Next: networks and volumes &rarr;</a></div>
+</main>
+<noscript><p class="notice wrap">The files and command output on this page are loaded with JavaScript from <a href="data/lessons.json">data/lessons.json</a>.</p></noscript>
+<script src="assets/common.js"></script>
+<script src="assets/static.js"></script>
 </body>
 </html>

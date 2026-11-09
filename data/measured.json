@@ -1,0 +1,253 @@
+{
+  "imageBytes": 173393851,
+  "layers": [
+    {
+      "bytes": 8426563,
+      "by": "ADD alpine-minirootfs-3.24.4-x86_64.tar.gz /"
+    },
+    {
+      "bytes": 0,
+      "by": "CMD [\"/bin/sh\"]"
+    },
+    {
+      "bytes": 0,
+      "by": "ENV NODE_VERSION=24.22.2"
+    },
+    {
+      "bytes": 158211916,
+      "by": "RUN /bin/sh -c addgroup -g 1000 node && adduser -u 1000 -G node -s /bin/sh -D node && apk "
+    },
+    {
+      "bytes": 0,
+      "by": "ENV YARN_VERSION=1.22.22"
+    },
+    {
+      "bytes": 5366589,
+      "by": "RUN /bin/sh -c apk add --no-cache --virtual .build-deps-yarn curl gnupg tar && export GNUP"
+    },
+    {
+      "bytes": 388,
+      "by": "COPY docker-entrypoint.sh /usr/local/bin/"
+    },
+    {
+      "bytes": 0,
+      "by": "ENTRYPOINT [\"docker-entrypoint.sh\"]"
+    },
+    {
+      "bytes": 0,
+      "by": "CMD [\"node\"]"
+    },
+    {
+      "bytes": 0,
+      "by": "WORKDIR /usr/src/app"
+    },
+    {
+      "bytes": 195,
+      "by": "COPY package*.json ./"
+    },
+    {
+      "bytes": 1387897,
+      "by": "RUN /bin/sh -c npm install"
+    },
+    {
+      "bytes": 303,
+      "by": "COPY . ."
+    },
+    {
+      "bytes": 0,
+      "by": "EXPOSE [3000/tcp]"
+    },
+    {
+      "bytes": 0,
+      "by": "CMD [\"node\" \"server.js\"]"
+    }
+  ],
+  "containerSize": "0B (virtual 173MB)",
+  "scenarios": [
+    {
+      "id": "first",
+      "label": "First build",
+      "change": "The build cache is empty.",
+      "steps": [
+        {
+          "n": 1,
+          "text": "FROM node:24-alpine",
+          "state": "cached",
+          "secs": 0.1
+        },
+        {
+          "n": 2,
+          "text": "WORKDIR /usr/src/app",
+          "state": "rebuilt",
+          "secs": 0.4
+        },
+        {
+          "n": 3,
+          "text": "COPY package*.json ./",
+          "state": "rebuilt",
+          "secs": 0.1
+        },
+        {
+          "n": 4,
+          "text": "RUN npm install",
+          "state": "rebuilt",
+          "secs": 2.8
+        },
+        {
+          "n": 5,
+          "text": "COPY . .",
+          "state": "rebuilt",
+          "secs": 0.2
+        }
+      ]
+    },
+    {
+      "id": "same",
+      "label": "Build again",
+      "change": "You changed nothing.",
+      "steps": [
+        {
+          "n": 1,
+          "text": "FROM node:24-alpine",
+          "state": "cached",
+          "secs": 0
+        },
+        {
+          "n": 2,
+          "text": "WORKDIR /usr/src/app",
+          "state": "cached",
+          "secs": 0
+        },
+        {
+          "n": 3,
+          "text": "COPY package*.json ./",
+          "state": "cached",
+          "secs": 0
+        },
+        {
+          "n": 4,
+          "text": "RUN npm install",
+          "state": "cached",
+          "secs": 0
+        },
+        {
+          "n": 5,
+          "text": "COPY . .",
+          "state": "cached",
+          "secs": 0
+        }
+      ]
+    },
+    {
+      "id": "code",
+      "label": "Edit server.js",
+      "change": "You edited one source file.",
+      "steps": [
+        {
+          "n": 1,
+          "text": "FROM node:24-alpine",
+          "state": "cached",
+          "secs": 0
+        },
+        {
+          "n": 2,
+          "text": "WORKDIR /usr/src/app",
+          "state": "cached",
+          "secs": 0
+        },
+        {
+          "n": 3,
+          "text": "COPY package*.json ./",
+          "state": "cached",
+          "secs": 0
+        },
+        {
+          "n": 4,
+          "text": "RUN npm install",
+          "state": "cached",
+          "secs": 0
+        },
+        {
+          "n": 5,
+          "text": "COPY . .",
+          "state": "rebuilt",
+          "secs": 0.2
+        }
+      ]
+    },
+    {
+      "id": "pkg",
+      "label": "Edit package.json",
+      "change": "You changed the version in package.json.",
+      "steps": [
+        {
+          "n": 1,
+          "text": "FROM node:24-alpine",
+          "state": "cached",
+          "secs": 0
+        },
+        {
+          "n": 2,
+          "text": "WORKDIR /usr/src/app",
+          "state": "cached",
+          "secs": 0
+        },
+        {
+          "n": 3,
+          "text": "COPY package*.json ./",
+          "state": "rebuilt",
+          "secs": 0.2
+        },
+        {
+          "n": 4,
+          "text": "RUN npm install",
+          "state": "rebuilt",
+          "secs": 2.7
+        },
+        {
+          "n": 5,
+          "text": "COPY . .",
+          "state": "rebuilt",
+          "secs": 0.2
+        }
+      ]
+    },
+    {
+      "id": "base",
+      "label": "Change the base image",
+      "change": "You changed FROM node:24-alpine to node:22-alpine.",
+      "steps": [
+        {
+          "n": 1,
+          "text": "FROM node:22-alpine",
+          "state": "cached",
+          "secs": 0
+        },
+        {
+          "n": 2,
+          "text": "WORKDIR /usr/src/app",
+          "state": "rebuilt",
+          "secs": 0.3
+        },
+        {
+          "n": 3,
+          "text": "COPY package*.json ./",
+          "state": "rebuilt",
+          "secs": 0.2
+        },
+        {
+          "n": 4,
+          "text": "RUN npm install",
+          "state": "rebuilt",
+          "secs": 2.8
+        },
+        {
+          "n": 5,
+          "text": "COPY . .",
+          "state": "rebuilt",
+          "secs": 0.3
+        }
+      ]
+    }
+  ]
+}

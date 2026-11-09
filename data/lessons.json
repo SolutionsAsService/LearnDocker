@@ -1,0 +1,262 @@
+[
+  {
+    "id": "first-containers",
+    "title": "Run, list, stop, remove",
+    "lead": "Start your first containers and watch their state change.",
+    "steps": [
+      {
+        "cmd": "docker --version",
+        "expect": "Docker version",
+        "out": "Docker version 29.9.2, build a82e528"
+      },
+      {
+        "cmd": "docker run --rm hello-world",
+        "expect": "Hello from Docker!",
+        "note": "Docker pulls the image if it is not on your machine, runs it, prints a message, and --rm deletes the container when it exits.",
+        "out": "\nHello from Docker!\nThis message shows that your installation appears to be working correctly.\n\nTo generate this message, Docker took the following steps:\n 1. The Docker client contacted the Docker daemon.\n 2. The Docker daemon pulled the \"hello-world\" image from the Docker Hub.\n    (amd64)\n 3. The Docker daemon created a new container from that image which runs the\n    executable that produces the output you are currently reading.\n 4. The Docker daemon streamed that output to the Docker client, which sent it\n    to your terminal.\n\nTo try something more ambitious, you can run an Ubuntu container with:\n..."
+      },
+      {
+        "cmd": "docker run -d --name web nginx:alpine",
+        "expect": "^[0-9a-f]{64}$",
+        "note": "-d runs it in the background and prints the new container's id.",
+        "out": "d1b00c2dfdd160358d06a47cfe66c8f4282ab26f6aab41ab5cd653a3a7123e92"
+      },
+      {
+        "cmd": "docker ps --format 'table {{.Names}}\\t{{.Image}}\\t{{.Status}}'",
+        "expect": "web\\s+nginx:alpine\\s+Up",
+        "out": "NAMES     IMAGE          STATUS\nweb       nginx:alpine   Up Less than a second"
+      },
+      {
+        "cmd": "docker stop web",
+        "expect": "^web$",
+        "out": "web"
+      },
+      {
+        "cmd": "docker ps -a --format 'table {{.Names}}\\t{{.Image}}\\t{{.Status}}'",
+        "expect": "web\\s+nginx:alpine\\s+Exited",
+        "note": "A stopped container still exists. ps shows only running ones; -a shows all.",
+        "out": "NAMES     IMAGE          STATUS\nweb       nginx:alpine   Exited (0) Less than a second ago"
+      },
+      {
+        "cmd": "docker rm web",
+        "expect": "^web$",
+        "out": "web"
+      }
+    ],
+    "cleanup": [
+      "docker rm -f web"
+    ]
+  },
+  {
+    "id": "build-image",
+    "title": "Build an image from a Dockerfile, then run it",
+    "lead": "A small web server with no dependencies, so the build needs nothing but the base image.",
+    "files": "lab/hello-node",
+    "steps": [
+      {
+        "cmd": "docker build --progress=plain -t hello-node .",
+        "expect": "naming to docker.io/library/hello-node",
+        "show": "^#[0-9]+ \\[[0-9]+/[0-9]+\\]|naming to docker.io",
+        "note": "-t names the image. The dot is the build context: the folder Docker may copy from. --progress=plain prints every step on its own lines; to keep this page short, only the lines that name a step are shown.",
+        "out": "#4 [1/5] FROM docker.io/library/node:24-alpine@sha256:a34ab6d7f6f4813f4d0c5469d74685604b962fbdbf5793a7bc7b4998ecb867c8\n#8 [2/5] WORKDIR /usr/src/app\n#7 [3/5] COPY package*.json ./\n#6 [4/5] RUN npm install\n#9 [5/5] COPY . .\n#10 naming to docker.io/library/hello-node done"
+      },
+      {
+        "cmd": "docker run -d --name hn -p 3000:3000 hello-node",
+        "expect": "^[0-9a-f]{64}$",
+        "note": "-p 3000:3000 publishes the container's port 3000 on your machine's port 3000.",
+        "out": "b450cfab8e21ccc01ac11c6700e17a8c0d781005879491ea12e58ca80468897a"
+      },
+      {
+        "cmd": "sleep 2; curl -s localhost:3000",
+        "expect": "Hello from container [0-9a-f]{12}",
+        "out": "Hello from container b450cfab8e21"
+      },
+      {
+        "cmd": "docker logs hn",
+        "expect": "listening on 3000",
+        "out": "listening on 3000"
+      },
+      {
+        "cmd": "docker history hello-node --format 'table {{.Size}}\\t{{.CreatedBy}}' | head -9",
+        "expect": "COPY \\. \\.",
+        "note": "Every instruction in the Dockerfile that changes files made one layer. The rows below the first six come from the base image.",
+        "out": "SIZE      CREATED BY\n0B        CMD [\"node\" \"server.js\"]\n0B        EXPOSE [3000/tcp]\n303B      COPY . . # buildkit\n1.39MB    RUN /bin/sh -c npm install # buildkit\n195B      COPY package*.json ./ # buildkit\n0B        WORKDIR /usr/src/app\n0B        CMD [\"node\"]\n0B        ENTRYPOINT [\"docker-entrypoint.sh\"]"
+      }
+    ],
+    "cleanup": [
+      "docker rm -f hn"
+    ]
+  },
+  {
+    "id": "compose-two",
+    "title": "Two services with Docker Compose",
+    "lead": "One file describes both containers. The second waits until the first reports healthy, then reaches it by its service name.",
+    "files": "lab/hello-node",
+    "filesAs": "hello-node",
+    "dirName": "demo",
+    "extra": {
+      "old-style.yaml": "version: \"3.8\"\nservices:\n  web:\n    image: nginx:alpine\n",
+      "compose.yaml": "services:\n  web:\n    build: ./hello-node\n    ports:\n      - \"3000:3000\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O\", \"/dev/null\", \"http://localhost:3000\"]\n      interval: 2s\n      timeout: 2s\n      retries: 15\n\n  probe:\n    image: alpine\n    depends_on:\n      web:\n        condition: service_healthy\n    command: [\"wget\", \"-qO-\", \"http://web:3000\"]\n"
+    },
+    "steps": [
+      {
+        "cmd": "docker compose up -d",
+        "expect": "Container .*web.* Healthy",
+        "tail": 8,
+        "note": "Compose builds web, starts it, waits for its health check, then starts probe.",
+        "out": " Container demo-probe-1 Creating \n Container demo-probe-1 Created \n Container demo-web-1 Starting \n Container demo-web-1 Started \n Container demo-web-1 Waiting \n Container demo-web-1 Healthy \n Container demo-probe-1 Starting \n Container demo-probe-1 Started"
+      },
+      {
+        "cmd": "docker compose ps -a --format 'table {{.Service}}\\t{{.Status}}'",
+        "expect": "web\\s+Up .*healthy",
+        "note": "probe runs once and stops. Whether it still shows as Up or already as Exited depends on timing; web stays up and reports healthy.",
+        "out": "SERVICE   STATUS\nprobe     Up Less than a second\nweb       Up 2 seconds (healthy)"
+      },
+      {
+        "cmd": "docker compose logs probe --no-log-prefix",
+        "expect": "Hello from container [0-9a-f]{12}",
+        "note": "probe reached web by its service name, not an IP address.",
+        "out": "Hello from container 7a538f76c45c"
+      },
+      {
+        "cmd": "docker compose down",
+        "expect": "Network .* Removed",
+        "tail": 6,
+        "out": " Container demo-web-1 Stopping \n Container demo-web-1 Stopped \n Container demo-web-1 Removing \n Container demo-web-1 Removed \n Network demo_default Removing \n Network demo_default Removed"
+      },
+      {
+        "cmd": "docker compose -f old-style.yaml config --quiet",
+        "expect": "version.* is obsolete",
+        "note": "Older tutorials start a file with a version line. Current Compose ignores it and says so. You do not need it.",
+        "out": "time=\"2026-11-09T02:49:37Z\" level=warning msg=\"/tmp/ld-compose-two-M3r5Zz/demo/old-style.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion\""
+      }
+    ],
+    "cleanup": [
+      "docker compose down -v"
+    ]
+  },
+  {
+    "id": "networks",
+    "title": "Containers finding each other by name",
+    "lead": "On the default network, names do not resolve. On a network you create, they do.",
+    "steps": [
+      {
+        "cmd": "docker run -d --name server nginx:alpine",
+        "expect": "^[0-9a-f]{64}$",
+        "out": "b13605f98f9f7875281c696b06468731f52c07557d8f59c71afeba25330297a8"
+      },
+      {
+        "cmd": "docker run --rm alpine wget -q -T 3 -O /dev/null http://server; echo \"exit code: $?\"",
+        "expect": "bad address 'server'|exit code: 1",
+        "note": "A second container on the default bridge cannot find 'server' by name.",
+        "out": "exit code: 1\nwget: bad address 'server'"
+      },
+      {
+        "cmd": "docker network create lab-net",
+        "expect": "^[0-9a-f]{64}$",
+        "out": "506568cd2f0008423e9943685c5829d3944eb479a2c6457652ab061b738ba838"
+      },
+      {
+        "cmd": "docker run -d --name server2 --network lab-net nginx:alpine",
+        "expect": "^[0-9a-f]{64}$",
+        "out": "aeaa62a57217bafff16ccb331034bf691514804a56740240dc4152d27a41d4d4"
+      },
+      {
+        "cmd": "docker run --rm --network lab-net alpine wget -q -O- http://server2 | head -4",
+        "expect": "Welcome to nginx",
+        "note": "On a user-defined network Docker runs a small DNS server, so the container name works as a host name.",
+        "out": "<!DOCTYPE html>\n<html>\n<head>\n<title>Welcome to nginx!</title>"
+      },
+      {
+        "cmd": "docker network ls --filter name=lab-net --format 'table {{.Name}}\\t{{.Driver}}\\t{{.Scope}}'",
+        "expect": "lab-net\\s+bridge\\s+local",
+        "out": "NAME      DRIVER    SCOPE\nlab-net   bridge    local"
+      }
+    ],
+    "cleanup": [
+      "docker rm -f server server2",
+      "docker network rm lab-net"
+    ]
+  },
+  {
+    "id": "volumes",
+    "title": "Data that outlives the container",
+    "lead": "A container's own files disappear with it. A volume does not.",
+    "steps": [
+      {
+        "cmd": "docker volume create notes",
+        "expect": "^notes$",
+        "out": "notes"
+      },
+      {
+        "cmd": "docker run --rm -v notes:/data alpine sh -c 'echo saved > /data/hello.txt'",
+        "expect": "^$",
+        "note": "The container writes a file into the volume and is removed when it exits.",
+        "out": ""
+      },
+      {
+        "cmd": "docker run --rm -v notes:/data alpine cat /data/hello.txt",
+        "expect": "^saved$",
+        "note": "A new container mounts the same volume and finds the file.",
+        "out": "saved"
+      },
+      {
+        "cmd": "docker run --rm alpine cat /data/hello.txt; echo \"exit code: $?\"",
+        "expect": "No such file or directory",
+        "note": "Without the volume there is nothing there: the first container's file went with it.",
+        "out": "exit code: 1\ncat: can't open '/data/hello.txt': No such file or directory"
+      },
+      {
+        "cmd": "docker volume ls --filter name=notes --format 'table {{.Name}}\\t{{.Driver}}'",
+        "expect": "notes\\s+local",
+        "out": "VOLUME NAME   DRIVER\nnotes         local"
+      }
+    ],
+    "cleanup": [
+      "docker volume rm notes"
+    ]
+  },
+  {
+    "id": "swarm",
+    "title": "Swarm: three copies of a service, then a rolling update",
+    "lead": "A swarm runs a service as several tasks and replaces them one at a time when you update it.",
+    "steps": [
+      {
+        "cmd": "docker swarm init --advertise-addr 127.0.0.1 | head -1",
+        "expect": "Swarm initialized",
+        "note": "This machine becomes a manager. A real cluster also joins other machines with the worker token that init prints.",
+        "out": "Swarm initialized: current node (lhap4fku5ceh0pl67kczg7d95) is now a manager."
+      },
+      {
+        "cmd": "docker service create --detach --name web --replicas 3 -p 8088:80 nginx:1.27-alpine",
+        "expect": "^[a-z0-9]{25}$",
+        "out": "h7eri0bp7tvojvger09x3f81w"
+      },
+      {
+        "cmd": "sleep 12; docker service ls --format 'table {{.Name}}\\t{{.Mode}}\\t{{.Replicas}}\\t{{.Image}}'",
+        "expect": "web\\s+replicated\\s+3/3\\s+nginx:1.27-alpine",
+        "out": "NAME      MODE         REPLICAS   IMAGE\nweb       replicated   3/3        nginx:1.27-alpine"
+      },
+      {
+        "cmd": "docker service scale --detach web=5",
+        "expect": "web scaled to 5",
+        "out": "web scaled to 5"
+      },
+      {
+        "cmd": "docker service update --detach --image nginx:1.28-alpine web",
+        "expect": "^web$",
+        "note": "Swarm replaces tasks one at a time (parallelism 1 by default), so the service keeps answering.",
+        "out": "web"
+      },
+      {
+        "cmd": "sleep 25; docker service ps web --filter desired-state=running --format 'table {{.Name}}\\t{{.Image}}\\t{{.CurrentState}}'",
+        "expect": "nginx:1.28-alpine",
+        "out": "NAME      IMAGE               CURRENT STATE\nweb.1     nginx:1.28-alpine   Running 10 seconds ago\nweb.2     nginx:1.28-alpine   Running 21 seconds ago\nweb.3     nginx:1.28-alpine   Running 13 seconds ago\nweb.4     nginx:1.28-alpine   Running 17 seconds ago\nweb.5     nginx:1.28-alpine   Running 6 seconds ago"
+      }
+    ],
+    "cleanup": [
+      "docker service rm web",
+      "docker swarm leave --force"
+    ]
+  }
+]
