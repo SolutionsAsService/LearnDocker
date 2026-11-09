@@ -5,7 +5,7 @@ LD.boot('home', function (G) {
   var cur = 'code', running = false, dfLines = [];
 
   var EXPLAIN = {
-    first: 'The build cache was empty, so every step ran.',
+    first: 'The build cache was empty, so every step after FROM ran.',
     same: 'Nothing changed, so every step was reused and the build ran no instruction at all.',
     code: 'You edited server.js. The step that copies only package.json and the step that installs from it were reused, because their inputs did not change. Only COPY . . saw a changed file, and it is the last step that does any work.',
     pkg: 'You changed package.json. That file is copied first, so its step ran again, and so did every step after it, including the install. A step can be reused only if every step before it was.',
@@ -56,7 +56,8 @@ LD.boot('home', function (G) {
       rows.push('<li class="' + st.state + '"><span>' + esc(st.text) + '<br><small>' + (st.state === 'cached' ? 'reused from cache' : 'ran again' + secs(st)) + '</small></span><span>' + G.fmtBytes(layerOf[n]) + '</span><span class="meter"><i style="width:' + w.toFixed(2) + '%"></i></span></li>');
     });
     var b = stepFor(s, 1), bchanged = b && stepFor(first, 1) && b.text !== stepFor(first, 1).text;
-    rows.push('<li class="base' + (bchanged ? ' rebuilt' : '') + '"><span>' + esc(b ? b.text : 'FROM') + '<br><small>' + (bchanged ? 'a different base image' : 'base image, already on this machine; a first pull downloads it') + ' · ' + M.layers.filter(function (l, k) { return k < i && l.bytes > 0; }).length + ' layers that add data</small></span><span>' + G.fmtBytes(baseBytes) + '</span><span class="meter"><i style="width:' + (100 * baseBytes / total).toFixed(2) + '%"></i></span></li>');
+    var measuredBase = !bchanged;
+    rows.push('<li class="base' + (bchanged ? ' rebuilt' : '') + '"><span>' + esc(b ? b.text : 'FROM') + '<br><small>' + (bchanged ? 'a different base image' : 'base image, already on this machine; a first pull downloads it') + (measuredBase ? ' · ' + M.layers.filter(function (l, k) { return k < i && l.bytes > 0; }).length + ' layers that add data' : '') + '</small></span><span>' + (measuredBase ? G.fmtBytes(baseBytes) : 'size not measured') + '</span><span class="meter"><i style="width:' + (measuredBase ? 100 * baseBytes / total : 0).toFixed(2) + '%"></i></span></li>');
     $('#layers').innerHTML = rows.join('');
     // Readout
     var ran = s.steps.filter(function (x) { return x.state === 'rebuilt' && x.n > 1; }), n5 = s.steps.filter(function (x) { return x.n > 1; }).length;
