@@ -175,3 +175,14 @@ The panel and the data audit before it found what the author could not: a lesson
 - [x] Double-loop paragraph written
 - [ ] Run recorded in the ledger: done afterwards from this file, ungraded
 - [x] Final reply states mode, tools, stop conditions and what was skipped
+
+## 18 Nov 2026: Polish, Adaptive, "Be more blue, better diagrams"
+
+Run type **Polish**, mode **Adaptive**. **The panel was not real: no sub-agents were available, so no seat sat and no panel round was convened.** The only judging was one author looking at screenshots and measurements. S2 and S3 are NOT met; the run is incomplete on those. Tools: Playwright via the shared grader (`floor.js`), a probe for rendered SVG text size, `node scripts/check.mjs --static` (no Docker daemon here, so the full check was not run).
+
+Baseline at 390x844 touch: all 11 pages failed (nav brand/skip link 41 and 38 px high, Copy buttons 32 px, 5 to 69 text nodes under 12 px). Final: 0 sideways overflow, 0 small targets, 0 text under 12 px, 0 small inputs on all 11 pages.
+
+**M1 Blue (KEEP-THE-RULE).** Variables only, in `assets/site.css`: paper `#f6f9ff`, page `#e8f0fd`, ink `#0a1b3a`, ink2 `#3d5272`, rule `#b4c7e6`, `--reuse`/`--brand` `#1d63ed`, `--brand-deep`/`--band` `#0b3d91`, `--sky` `#2496ed` (fills only), header band deep blue. Dark mode redefined on the same names. Orange stays "ran again", blue stays "reused". Contrast computed: ink/page 14.9, ink2/page 6.9, white/#1d63ed 5.2, white/#c2410c 5.2, orange/paper 4.9, white/band 10.0; dark: ink/page 16.1, ink2/paper 8.2, on-fill/reuse 6.7, on-fill/ran 5.3.
+**M2 Diagrams (BREAK of "no figures").** Five inline SVGs, 360-unit viewBox, text 13 units, rendered 12.35 px at 390 wide; role="img" with title and desc; shape carries meaning (dashed hatch = writable, dashed = absent, cross and tick on lookups). Layers are neutral sky, not blue-for-reused, because no cache state is drawn. Compose figure shows "volume: none declared" because the file has none.
+**M3 Floor fixes.** 44 px targets, 12 px minimum text, Copy button 44 px.
+Not done: figure numbers are typed into the SVG from `data/measured.json`, not generated; no check ties them. Dark mode was computed, not screenshotted.

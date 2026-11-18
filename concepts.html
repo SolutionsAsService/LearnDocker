@@ -28,6 +28,14 @@
     <li><strong>A container has a life cycle.</strong> It was created and running (<code>Up</code>), then stopped (<code>Exited (0)</code>, where 0 means it ended normally), then removed. A stopped container still exists until you remove it, which is why <code>docker ps</code> hides it and <code>docker ps -a</code> shows it.</li>
   </ul>
 
+  <figure class="fig" id="fig-c">
+    <svg viewBox="0 0 360 340" role="img" aria-labelledby="c-t c-d" focusable="false">
+      <title id="c-t">A container on top of an image’s layers</title><desc id="c-d">The image of the lab app is a stack of read-only layers: the node:24-alpine base at 172 MB, WORKDIR at 0 B, COPY package.json at 195 B, npm install at 1.39 MB and COPY . . at 303 B. A container adds one writable layer on top, which is 0 B when it starts.</desc>
+      <defs><pattern id="hatch-c" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="h0" width="10" height="10"/><line class="h1" x1="0" y1="0" x2="0" y2="10"/></pattern><marker id="ah-c" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path class="s-ah" d="M0 0L10 5L0 10z"/></marker></defs>
+      <rect class="s-wl" x="10" y="8" width="340" height="54"/><text class="s-t s-b" x="20" y="32">Container: writable layer</text><text class="s-t " x="20" y="51">0 B when it starts</text><rect class="s-zone" x="10" y="74" width="340" height="258"/><text class="s-t s-b s-lbl" x="20" y="94">Image: every layer read-only</text><rect class="s-layer" x="20" y="104" width="320" height="40"/><text class="s-t " x="30" y="129">COPY . .</text><text class="s-t s-r" x="330" y="129">303 B</text><rect class="s-layer" x="20" y="148" width="320" height="40"/><text class="s-t " x="30" y="173">RUN npm install</text><text class="s-t s-r" x="330" y="173">1.39 MB</text><rect class="s-layer" x="20" y="192" width="320" height="40"/><text class="s-t " x="30" y="217">COPY package*.json ./</text><text class="s-t s-r" x="330" y="217">195 B</text><rect class="s-layer" x="20" y="236" width="320" height="40"/><text class="s-t " x="30" y="261">WORKDIR /usr/src/app</text><text class="s-t s-r" x="330" y="261">0 B</text><rect class="s-layer" x="20" y="280" width="320" height="40"/><text class="s-t " x="30" y="305">node:24-alpine (base)</text><text class="s-t s-r" x="330" y="305">172 MB</text>
+    </svg>
+    <figcaption>The lab app’s image from <a href="dockerfile.html">the next chapter</a>, sizes from <code>docker history</code>. The container’s own layer is the only one that can change; removing the container leaves the image as it was. Writable layer: dashed, hatched. Read-only layers: solid.</figcaption>
+  </figure>
   <h2>The words, in one place</h2>
   <div class="tblwrap"><table class="t">
     <thead><tr><th>Word</th><th>What it is</th></tr></thead>

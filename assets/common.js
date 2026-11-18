@@ -24,7 +24,7 @@
     var h = document.createElement('header');
     h.className = 'site';
     h.innerHTML = '<a class="skip" href="#main">Skip to content</a><div class="wrap topbar"><a class="brand" href="index.html" aria-label="Learn Docker, home">' +
-      '<svg width="26" height="22" viewBox="0 0 26 22" aria-hidden="true"><g fill="currentColor"><rect x="1" y="12" width="7" height="8" /><rect x="9" y="12" width="7" height="8" /><rect x="17" y="12" width="7" height="8" /><rect x="9" y="3" width="7" height="8" /></g><rect x="17" y="3" width="7" height="8" fill="var(--ran)"/></svg>Learn Docker</a>' +
+      '<svg width="26" height="22" viewBox="0 0 26 22" aria-hidden="true"><g fill="currentColor"><rect x="1" y="12" width="7" height="8" /><rect x="9" y="12" width="7" height="8" /><rect x="17" y="12" width="7" height="8" /><rect x="9" y="3" width="7" height="8" /></g><rect x="17" y="3" width="7" height="8" fill="var(--band-mark)"/></svg>Learn Docker</a>' +
       '<nav aria-label="Main">' + NAV.map(function (n) { return '<a href="' + n[1] + '"' + (n[0] === active ? ' aria-current="page"' : '') + '>' + n[2] + '</a>'; }).join('') + '</nav></div>';
     document.body.insertBefore(h, document.body.firstChild);
     var f = document.createElement('footer');
