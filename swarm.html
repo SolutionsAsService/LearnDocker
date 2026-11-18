@@ -15,7 +15,7 @@
   <p class="stamp"></p>
   <p class="lede">Swarm mode lets Docker run a service as several identical tasks and keep that number running. You describe the service and Docker does the rest.</p>
   <p>Words used here: a <em>service</em> is the thing you ask Swarm to keep running; a <em>replica</em> (or <em>task</em>) is one running container of it; a <em>rolling update</em> swaps replicas to a new image a few at a time instead of all at once.</p>
-  <div class="callout"><b>What was tested</b>Everything on this page ran on a swarm of one machine, which is enough to see the commands and their effect. Joining other machines uses the worker token that <code>docker swarm init</code> prints; we did not test a multi-machine swarm. Swarm is Docker's own orchestrator; many teams use Kubernetes instead, which this site does not cover.</div>
+  <div class="callout"><b>What was tested</b>Everything on this page ran on a swarm of one machine, which is enough to see the commands and their effect. Joining other machines uses the worker token that <code>docker swarm init</code> prints; we did not test a multi-machine swarm. Swarm is Docker's own orchestrator. Kubernetes is another one; this site does not teach it. The next chapter sets the two side by side, from their documentation.</div>
 
   <h2>Start a swarm and a service</h2>
   <div data-lesson="swarm" data-steps="0-2"></div>
@@ -32,9 +32,97 @@
     </svg>
     <figcaption>Drawn for what was run: one machine that is the manager and the only node, so there is no worker. The state shown is the end of the transcript above. The replicas all sit on that one machine.</figcaption>
   </figure>
+  <h2>How a swarm works</h2>
+  <p>The figure above is what ran. This one is how a swarm of several machines is built, and none of it was run here. Every box is a quotation from the Docker documentation, listed with its page on <a href="kubernetes.html">the next chapter</a>.</p>
+  <figure class="fig docs" id="fig-how">
+    <p class="docs-label">From the official documentation. Not run here.</p>
+    <svg viewBox="0 0 360 743" role="img" aria-labelledby="h-t h-d" focusable="false">
+      <title id="h-t">How a swarm works, from the Docker documentation</title><desc id="h-d">From the official documentation. Not run here. Managers keep the swarm state with Raft and dispatch tasks to workers. A service is the definition of the tasks. Workers only execute containers: they do not join Raft, schedule or serve the API. Each task invokes exactly one container. Every node routes ingress connections to a running task. An internal DNS component gives each service a DNS entry.</desc>
+      <defs><marker id="ah-h" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path class="s-ah" d="M0 0L10 5L0 10z"/></marker></defs>
+      <g data-claim="S1">
+      <text class="s-t s-b s-lbl" x="20" y="30">A swarm is a cluster of one or more</text>
+      <text class="s-t s-b s-lbl" x="20" y="47">Docker Engines.</text>
+      </g>
+      <rect class="d-box" x="20" y="59" width="320" height="72"/>
+      <g data-claim="S9">
+      <text class="s-t s-b" x="30" y="79">Service</text>
+      </g>
+      <g data-claim="S9">
+      <text class="s-t " x="30" y="100">The definition of the tasks to</text>
+      <text class="s-t " x="30" y="117">execute.</text>
+      </g>
+      <rect class="d-none" x="20" y="139" width="320" height="0.01"/>
+      <rect class="d-box" x="20" y="149" width="320" height="152"/>
+      <g data-claim="S2">
+      <text class="s-t s-b" x="30" y="169">Managers</text>
+      </g>
+      <g data-claim="S3">
+      <text class="s-t " x="30" y="190">Using Raft, they keep one consistent</text>
+      <text class="s-t " x="30" y="207">state of the swarm and its services.</text>
+      </g>
+      <g data-claim="S7">
+      <text class="s-t " x="30" y="228">Odd N managers tolerate the loss of</text>
+      <text class="s-t " x="30" y="245">at most (N-1)/2.</text>
+      </g>
+      <g data-claim="S6">
+      <text class="s-t " x="30" y="266">A worker needs at least one manager.</text>
+      </g>
+      <g data-claim="S8">
+      <text class="s-t " x="30" y="287">They dispatch tasks to workers.</text>
+      </g>
+      <path class="d-line" d="M180 303 L180 339" marker-end="url(#ah-h)"/>
+      <text class="s-t s-b" x="190" y="327" data-claim="S8">tasks</text>
+      <rect class="d-box" x="20" y="347" width="150" height="214"/>
+      <text class="s-t s-b" x="30" y="367" data-claim="S4">Worker</text>
+      <g data-claim="S4">
+      <text class="s-t " x="30" y="384">Its sole purpose</text>
+      <text class="s-t " x="30" y="401">is to execute</text>
+      <text class="s-t " x="30" y="418">containers.</text>
+      </g>
+      <rect class="d-task" x="30" y="437" width="130" height="64"/>
+      <text class="s-t s-b" x="38" y="457" data-claim="S10">Task</text>
+      <rect class="d-box" x="38" y="467" width="114" height="26"/>
+      <text class="s-t " x="46" y="485" data-claim="S11">1 container</text>
+      <g data-claim="S5">
+      <text class="s-t " x="30" y="523">No Raft, no</text>
+      <text class="s-t " x="30" y="540">scheduling, no</text>
+      <text class="s-t " x="30" y="557">API.</text>
+      </g>
+      <rect class="d-box" x="190" y="347" width="150" height="214"/>
+      <text class="s-t s-b" x="200" y="367" data-claim="S4">Worker</text>
+      <g data-claim="S4">
+      <text class="s-t " x="200" y="384">Its sole purpose</text>
+      <text class="s-t " x="200" y="401">is to execute</text>
+      <text class="s-t " x="200" y="418">containers.</text>
+      </g>
+      <rect class="d-task" x="200" y="437" width="130" height="64"/>
+      <text class="s-t s-b" x="208" y="457" data-claim="S10">Task</text>
+      <rect class="d-box" x="208" y="467" width="114" height="26"/>
+      <text class="s-t " x="216" y="485" data-claim="S11">1 container</text>
+      <g data-claim="S5">
+      <text class="s-t " x="200" y="523">No Raft, no</text>
+      <text class="s-t " x="200" y="540">scheduling, no</text>
+      <text class="s-t " x="200" y="557">API.</text>
+      </g>
+      <path class="d-line" d="M95 605 L95 565" marker-end="url(#ah-h)"/>
+      <path class="d-line" d="M265 605 L265 565" marker-end="url(#ah-h)"/>
+      <rect class="d-box" x="20" y="609" width="320" height="53"/>
+      <g data-claim="S12">
+      <text class="s-t " x="30" y="631">Ingress connection. Every node</text>
+      <text class="s-t " x="30" y="648">routes it to a running task.</text>
+      </g>
+      <rect class="d-box" x="20" y="676" width="320" height="53"/>
+      <g data-claim="S13">
+      <text class="s-t " x="30" y="698">Internal DNS gives each service a</text>
+      <text class="s-t " x="30" y="715">DNS entry.</text>
+      </g>
+      <rect class="d-zone" x="10" y="8" width="340" height="729"/>
+    </svg>
+    <figcaption>Dashed boxes: from the Docker documentation, not run here. The number of workers and tasks drawn is only for the picture; the documentation quoted gives no count. The solid figure above shows what was run.</figcaption>
+  </figure>
   <p>When you are done, <code>docker service rm web</code> removes the service and <code>docker swarm leave --force</code> takes this machine out of the swarm.</p>
 
-  <div class="next"><a href="networking.html">&larr; Networks and volumes</a><a href="commands.html">Next: every command &rarr;</a></div>
+  <div class="next"><a href="networking.html">&larr; Networks and volumes</a><a href="kubernetes.html">Next: Swarm and Kubernetes &rarr;</a></div>
 </main>
 <noscript><p class="notice wrap">The command output on this page is loaded with JavaScript from <a href="data/lessons.json">data/lessons.json</a>.</p></noscript>
 <script src="assets/common.js"></script>

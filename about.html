@@ -28,15 +28,71 @@
   <p>Everything ran on Linux. Docker Desktop on Windows or macOS runs the daemon in a virtual machine, so a port published with <code>-p</code> is reached at <code>localhost</code> through that machine, and a folder bind-mounted into a container is shared from your computer. We did not test either there. The commands also assume a bash shell (see the note on the Concepts page).</p>
 
   <h2>What is checked, and how</h2>
+  <figure class="fig" id="fig-check">
+    <svg viewBox="0 0 360 634" role="img" aria-labelledby="a-t a-d" focusable="false">
+      <title id="a-t">How this site is checked</title><desc id="a-d">How this site is checked. data/lessons.json holds every command and what it must print. scripts/check.mjs runs them: it copies the lesson files into a fresh folder, runs each command on a real Docker daemon, compares the output with expect, and with --update writes the output shown on the pages, verified.json and measured.json. With --static it needs no Docker daemon and checks links, external requests, banned phrases, the shape of the data files and the quotations in sources.json.</desc>
+      <defs><marker id="ah-a" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path class="s-ah" d="M0 0L10 5L0 10z"/></marker></defs>
+      <rect class="s-box" x="20" y="10" width="320" height="72"/>
+      <g>
+      <text class="s-t s-b" x="30" y="30">data/lessons.json</text>
+      </g>
+      <g>
+      <text class="s-t " x="30" y="51">Every command, and what it must</text>
+      <text class="s-t " x="30" y="68">print (expect).</text>
+      </g>
+      <path class="s-line" d="M180 84 L180 108" marker-end="url(#ah-a)"/>
+      <rect class="s-box" x="20" y="112" width="320" height="36"/>
+      <g>
+      <text class="s-t s-b" x="30" y="134">scripts/check.mjs</text>
+      </g>
+      <rect class="s-net" x="20" y="164" width="320" height="318"/>
+      <text class="s-t s-b s-lbl" x="30" y="186">node scripts/check.mjs</text>
+      <rect class="s-layer" x="32" y="198" width="296" height="51"/>
+      <g>
+      <text class="s-t " x="40" y="218">Copy the lesson files into a fresh</text>
+      <text class="s-t " x="40" y="235">folder.</text>
+      </g>
+      <path class="s-line" d="M180 250 L180 264" marker-end="url(#ah-a)"/>
+      <rect class="s-layer" x="32" y="266" width="296" height="51"/>
+      <g>
+      <text class="s-t " x="40" y="286">Run each command on a real Docker</text>
+      <text class="s-t " x="40" y="303">daemon.</text>
+      </g>
+      <path class="s-line" d="M180 318 L180 332" marker-end="url(#ah-a)"/>
+      <rect class="s-layer" x="32" y="334" width="296" height="51"/>
+      <g>
+      <text class="s-t " x="40" y="354">Compare with expect: exit 0 and a</text>
+      <text class="s-t " x="40" y="371">match, or fail.</text>
+      </g>
+      <path class="s-line" d="M180 386 L180 400" marker-end="url(#ah-a)"/>
+      <rect class="s-layer" x="32" y="402" width="296" height="68"/>
+      <g>
+      <text class="s-t " x="40" y="422">With --update: write the output</text>
+      <text class="s-t " x="40" y="439">shown on the pages, verified.json</text>
+      <text class="s-t " x="40" y="456">and measured.json.</text>
+      </g>
+      <rect class="s-zone" x="20" y="498" width="320" height="124"/>
+      <text class="s-t s-b s-lbl" x="30" y="520">node scripts/check.mjs --static</text>
+      <g>
+      <text class="s-t " x="30" y="540">Needs no Docker daemon. It skips the</text>
+      <text class="s-t " x="30" y="557">runs above and checks links,</text>
+      <text class="s-t " x="30" y="574">external requests, banned phrases,</text>
+      <text class="s-t " x="30" y="591">the shape of the data files and the</text>
+      <text class="s-t " x="30" y="608">quotations in data/sources.json.</text>
+      </g>
+    </svg>
+    <figcaption>The check as <code>scripts/check.mjs</code> runs it. The first path needs a Docker daemon; <code>--static</code> does not.</figcaption>
+  </figure>
   <ul>
     <li><strong>Commands.</strong> Every command on the site is in <code>data/lessons.json</code>. <code>node scripts/check.mjs</code> runs them against a real Docker daemon, in a fresh folder, and fails if one exits with an error or does not print what the lesson says it prints. <code>node scripts/check.mjs --update</code> rewrites the output shown on the pages from that run.</li>
     <li><strong>Measurements.</strong> The reuse figures on the home page and the table on the Images page come from real builds: the script builds the app, changes one thing, builds again and records which steps the build marked as cached. The layer sizes come from <code>docker history</code>. The gate fails if the measurements stop supporting the lesson's claim (for example, that editing <code>server.js</code> leaves <code>npm install</code> reused).</li>
     <li><strong>Links.</strong> The script fails on any internal link that points nowhere, on any external font or script, and on a short list of phrases the first review of this site turned up.</li>
     <li><strong>Claims.</strong> A statement about how Docker behaves is either something the page shows being run, or it says so ("we did not run that form here"). Times vary by machine, and image sizes depend on the base image version.</li>
+    <li><strong>Quotations.</strong> What the <a href="kubernetes.html">Swarm and Kubernetes</a> page and the second Swarm figure say about Kubernetes and about a swarm of several machines was not run. It is quoted word for word from the official documentation in <code>data/sources.json</code>, with the page and the day fetched. <code>node scripts/check.mjs --static</code> fails if a quotation lacks its source, if its address is not on docs.docker.com or kubernetes.io, if a figure uses a claim that is not there, if a quotation in a page differs from the file, or if a figure from the documentation loses its "not run here" label.</li>
   </ul>
 
   <h2>What is not covered</h2>
-  <p>Kubernetes, Docker Desktop, Windows containers, image security scanning, multi-stage builds, build secrets, registries other than Docker Hub, and a swarm of more than one machine. Pulling images and installing packages inside a build need network access, which the check machine had only for pulling images; that is why the lab app has no dependencies to install.</p>
+  <p>Running Kubernetes (the Kubernetes page is quoted from its documentation, not run), Docker Desktop, Windows containers, image security scanning, multi-stage builds, build secrets, registries other than Docker Hub, and a swarm of more than one machine. Pulling images and installing packages inside a build need network access, which the check machine had only for pulling images; that is why the lab app has no dependencies to install.</p>
 
   <h2>What changed from the first version</h2>
   <p>The first version had seven links to pages that did not exist, a news list with no sources, and a promise of labs that did not exist. Its Dockerfile lesson built an image whose container exited at once because the app it named was never provided. Its Compose lesson used the <code>docker-compose</code> command, which a current Docker install does not have. Its sample app claimed its database service would be waited for, when the setting it used only orders start-up. Those were measured by running them. The lessons were rewritten, the sample app was replaced by the dependency-free lab app, and the news list was removed.</p>

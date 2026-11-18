@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Swarm and Kubernetes | Learn Docker</title>
+  <meta name="description" content="Docker Swarm and Kubernetes side by side, drawn from their official documentation. Kubernetes was not run for this page.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-page="kubernetes">
+<main id="main" class="wrap page prose">
+  <p class="kicker">Chapter 6</p>
+  <h1>Swarm and Kubernetes</h1>
+  <p class="lede">Both run containers across several machines. This page sets what each one's documentation says, row by row.</p>
+  <div class="callout"><b>Read this first</b>
+    <p><strong>Kubernetes was not run for this page.</strong> A swarm of several machines was not run either. Every statement about them below is a quotation from the official documentation, with its page and the day it was fetched (2026-11-18).</p>
+    <p><strong>This site does not teach Kubernetes.</strong> Its lessons are Docker commands that were run and printed.</p>
+    <p><strong>This page does not say</strong> which is faster, how many people use either, which is easier to learn, or which one you should choose. No source for any of that was gathered, so the page makes no such statement.</p>
+  </div>
+  <ul class="legend" aria-label="How to read the figures">
+    <li><i aria-hidden="true"></i> Solid border: run on this site.</li>
+    <li><i class="doc" aria-hidden="true"></i> Dashed border: from the docs, not run here.</li>
+  </ul>
+
+  <h2>Side by side</h2>
+  <figure class="fig docs" id="fig-side">
+    <p class="docs-label">From the official documentation. Not run here.</p>
+    <svg viewBox="0 0 360 799" role="img" aria-labelledby="k-t k-d" focusable="false">
+      <title id="k-t">Swarm and Kubernetes side by side, from the official documentation</title><desc id="k-d">From the official documentation. Not run here. Seven rows, Swarm on the left and Kubernetes on the right. Who manages the cluster: Swarm, Manager nodes dispatch tasks to workers. Kubernetes, A control plane: API server, scheduler, controllers. Where state lives: Swarm, Raft, kept by the managers. Kubernetes, etcd, a key value store. On a worker node: Swarm, Docker Engine whose sole purpose is to execute containers. Kubernetes, kubelet ensures that Pods are running. What you declare: Swarm, A service: the definition of the tasks. Kubernetes, A Deployment: a desired state. The unit of work: Swarm, A task invokes exactly one container. Kubernetes, A Pod is a group of one or more containers. How you reach it: Swarm, Every node routes ingress to a running task. Kubernetes, A Service exposes an application running as Pods. DNS: Swarm, An internal DNS entry for each service. Kubernetes, DNS for cluster-wide resolution.</desc>
+      <defs><marker id="ah-k" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path class="s-ah" d="M0 0L10 5L0 10z"/></marker></defs>
+      <text class="s-t s-b s-lbl" x="20" y="30">Swarm</text>
+      <text class="s-t s-b s-lbl" x="190" y="30">Kubernetes</text>
+      <text class="s-t s-b" x="20" y="58">Who manages the cluster</text>
+      <rect class="d-box" x="16" y="68" width="162" height="82"/>
+      <rect class="d-box" x="182" y="68" width="162" height="82"/>
+      <g data-claim="S2 S8">
+      <text class="s-t " x="22" y="87">Manager nodes</text>
+      <text class="s-t " x="22" y="104">dispatch tasks to</text>
+      <text class="s-t " x="22" y="121">workers.</text>
+      </g>
+      <g data-claim="K1 K2 K4 K5">
+      <text class="s-t " x="190" y="87">A control plane:</text>
+      <text class="s-t " x="190" y="104">API server,</text>
+      <text class="s-t " x="190" y="121">scheduler,</text>
+      <text class="s-t " x="190" y="138">controllers.</text>
+      </g>
+      <text class="s-t s-b" x="20" y="178">Where state lives</text>
+      <rect class="d-box" x="16" y="188" width="162" height="48"/>
+      <rect class="d-box" x="182" y="188" width="162" height="48"/>
+      <g data-claim="S3">
+      <text class="s-t " x="22" y="207">Raft, kept by the</text>
+      <text class="s-t " x="22" y="224">managers.</text>
+      </g>
+      <g data-claim="K3">
+      <text class="s-t " x="190" y="207">etcd, a key value</text>
+      <text class="s-t " x="190" y="224">store.</text>
+      </g>
+      <text class="s-t s-b" x="20" y="264">On a worker node</text>
+      <rect class="d-box" x="16" y="274" width="162" height="65"/>
+      <rect class="d-box" x="182" y="274" width="162" height="65"/>
+      <g data-claim="S4 S5">
+      <text class="s-t " x="22" y="293">Docker Engine whose</text>
+      <text class="s-t " x="22" y="310">sole purpose is to</text>
+      <text class="s-t " x="22" y="327">execute containers.</text>
+      </g>
+      <g data-claim="K6">
+      <text class="s-t " x="190" y="293">kubelet ensures</text>
+      <text class="s-t " x="190" y="310">that Pods are</text>
+      <text class="s-t " x="190" y="327">running.</text>
+      </g>
+      <text class="s-t s-b" x="20" y="367">What you declare</text>
+      <rect class="d-box" x="16" y="377" width="162" height="65"/>
+      <rect class="d-box" x="182" y="377" width="162" height="65"/>
+      <g data-claim="S9">
+      <text class="s-t " x="22" y="396">A service: the</text>
+      <text class="s-t " x="22" y="413">definition of the</text>
+      <text class="s-t " x="22" y="430">tasks.</text>
+      </g>
+      <g data-claim="K10">
+      <text class="s-t " x="190" y="396">A Deployment: a</text>
+      <text class="s-t " x="190" y="413">desired state.</text>
+      </g>
+      <text class="s-t s-b" x="20" y="470">The unit of work</text>
+      <rect class="d-box" x="16" y="480" width="162" height="99"/>
+      <rect class="d-box" x="182" y="480" width="162" height="99"/>
+      <g data-claim="S10 S11">
+      <text class="s-t " x="22" y="499">A task invokes</text>
+      <text class="s-t " x="22" y="516">exactly one</text>
+      <text class="s-t " x="22" y="533">container.</text>
+      </g>
+      <g data-claim="K7 K8">
+      <text class="s-t " x="190" y="499">A Pod is a group of</text>
+      <text class="s-t " x="190" y="516">one or more</text>
+      <text class="s-t " x="190" y="533">containers.</text>
+      </g>
+      <g data-claim="S11"><rect class="d-task" x="22" y="541" width="34" height="26"/><rect class="d-sq" x="31" y="547" width="14" height="14"/></g>
+      <g data-claim="K8"><rect class="d-task" x="190" y="541" width="72" height="26"/><rect class="d-sq" x="198" y="547" width="14" height="14"/><rect class="d-sq" x="234" y="547" width="14" height="14"/></g>
+      <text class="s-t s-b" x="217" y="560">+</text>
+      <text class="s-t " x="270" y="560" data-claim="K8">1 or more</text>
+      <text class="s-t " x="66" y="560" data-claim="S11">exactly 1</text>
+      <text class="s-t s-b" x="20" y="607">How you reach it</text>
+      <rect class="d-box" x="16" y="617" width="162" height="65"/>
+      <rect class="d-box" x="182" y="617" width="162" height="65"/>
+      <g data-claim="S12">
+      <text class="s-t " x="22" y="636">Every node routes</text>
+      <text class="s-t " x="22" y="653">ingress to a</text>
+      <text class="s-t " x="22" y="670">running task.</text>
+      </g>
+      <g data-claim="K11">
+      <text class="s-t " x="190" y="636">A Service exposes</text>
+      <text class="s-t " x="190" y="653">an application</text>
+      <text class="s-t " x="190" y="670">running as Pods.</text>
+      </g>
+      <text class="s-t s-b" x="20" y="710">DNS</text>
+      <rect class="d-box" x="16" y="720" width="162" height="65"/>
+      <rect class="d-box" x="182" y="720" width="162" height="65"/>
+      <g data-claim="S13">
+      <text class="s-t " x="22" y="739">An internal DNS</text>
+      <text class="s-t " x="22" y="756">entry for each</text>
+      <text class="s-t " x="22" y="773">service.</text>
+      </g>
+      <g data-claim="K12">
+      <text class="s-t " x="190" y="739">DNS for cluster-</text>
+      <text class="s-t " x="190" y="756">wide resolution.</text>
+      </g>
+      <rect class="d-zone" x="8" y="8" width="344" height="787"/>
+    </svg>
+    <figcaption>Each pair of boxes sits in one row because the documentation describes a similar part of each system there; it does not say the two are the same. One difference the quotations show plainly: a Swarm task invokes exactly one container, while a Pod is a group of one or more.</figcaption>
+  </figure>
+  <p>For how a swarm itself is put together, see the second figure on <a href="swarm.html#fig-how">the Swarm chapter</a>.</p>
+
+  <h2>The same rows, as a table</h2>
+  <p>Every quotation is word for word. The ids match the figure.</p>
+  <div class="tblwrap"><table class="t claims" role="table">
+    <caption class="sr">Swarm and Kubernetes, one concept per row, with quotations and claim ids</caption>
+    <thead><tr role="row"><th scope="col" role="columnheader">Concept</th><th scope="col" role="columnheader">Swarm</th><th scope="col" role="columnheader">Kubernetes</th><th scope="col" role="columnheader">Claim ids</th></tr></thead>
+    <tbody>
+      <tr role="row"><th scope="row" role="rowheader">Who manages the cluster</th><td role="cell" data-label="Swarm"><p><q data-claim="S2">There are two types of nodes: managers and workers.</q> <span class="cid">S2</span></p><p><q data-claim="S8">The manager node dispatches units of work called tasks to worker nodes.</q> <span class="cid">S8</span></p></td><td role="cell" data-label="Kubernetes"><p><q data-claim="K1">A Kubernetes cluster consists of a control plane and one or more worker nodes.</q> <span class="cid">K1</span></p><p><q data-claim="K2">kube-apiserver The core component server that exposes the Kubernetes HTTP API.</q> <span class="cid">K2</span></p><p><q data-claim="K4">kube-scheduler Looks for Pods not yet bound to a node, and assigns each Pod to a suitable node.</q> <span class="cid">K4</span></p><p><q data-claim="K5">kube-controller-manager Runs controllers to implement Kubernetes API behavior.</q> <span class="cid">K5</span></p></td><td role="cell" data-label="Claim ids"><code>S2 S8 K1 K2 K4 K5</code></td></tr>
+      <tr role="row"><th scope="row" role="rowheader">Where state lives</th><td role="cell" data-label="Swarm"><p><q data-claim="S3">Using a Raft implementation, the managers maintain a consistent internal state of the entire swarm and all the services running on it.</q> <span class="cid">S3</span></p></td><td role="cell" data-label="Kubernetes"><p><q data-claim="K3">etcd Consistent and highly-available key value store for all API server data.</q> <span class="cid">K3</span></p></td><td role="cell" data-label="Claim ids"><code>S3 K3</code></td></tr>
+      <tr role="row"><th scope="row" role="rowheader">What runs on a worker node</th><td role="cell" data-label="Swarm"><p><q data-claim="S4">Worker nodes are also instances of Docker Engine whose sole purpose is to execute containers.</q> <span class="cid">S4</span></p><p><q data-claim="S5">Worker nodes don't participate in the Raft distributed state, make scheduling decisions, or serve the swarm mode HTTP API.</q> <span class="cid">S5</span></p></td><td role="cell" data-label="Kubernetes"><p><q data-claim="K6">kubelet Ensures that Pods are running, including their containers.</q> <span class="cid">K6</span></p></td><td role="cell" data-label="Claim ids"><code>S4 S5 K6</code></td></tr>
+      <tr role="row"><th scope="row" role="rowheader">What you declare</th><td role="cell" data-label="Swarm"><p><q data-claim="S9">A service is the definition of the tasks to execute on the manager or worker nodes.</q> <span class="cid">S9</span></p></td><td role="cell" data-label="Kubernetes"><p><q data-claim="K9">A Deployment manages a set of Pods to run an application workload, usually one that doesn't maintain state.</q> <span class="cid">K9</span></p><p><q data-claim="K10">You describe a desired state in a Deployment, and the Deployment Controller changes the actual state to the desired state at a controlled rate.</q> <span class="cid">K10</span></p></td><td role="cell" data-label="Claim ids"><code>S9 K9 K10</code></td></tr>
+      <tr role="row"><th scope="row" role="rowheader">The unit of work</th><td role="cell" data-label="Swarm"><p><q data-claim="S10">A task is the atomic unit of scheduling within a swarm.</q> <span class="cid">S10</span></p><p><q data-claim="S11">In the Swarm mode model, each task invokes exactly one container.</q> <span class="cid">S11</span></p></td><td role="cell" data-label="Kubernetes"><p><q data-claim="K7">Pods are the smallest deployable units of computing that you can create and manage in Kubernetes.</q> <span class="cid">K7</span></p><p><q data-claim="K8">A Pod (as in a pod of whales or pea pod) is a group of one or more containers, with shared storage and network resources, and a specification for how to run the containers.</q> <span class="cid">K8</span></p></td><td role="cell" data-label="Claim ids"><code>S10 S11 K7 K8</code></td></tr>
+      <tr role="row"><th scope="row" role="rowheader">How you reach it</th><td role="cell" data-label="Swarm"><p><q data-claim="S12">All nodes in the swarm route ingress connections to a running task instance.</q> <span class="cid">S12</span></p></td><td role="cell" data-label="Kubernetes"><p><q data-claim="K11">In Kubernetes, a Service is a method for exposing a network application that is running as one or more Pods in your cluster.</q> <span class="cid">K11</span></p></td><td role="cell" data-label="Claim ids"><code>S12 K11</code></td></tr>
+      <tr role="row"><th scope="row" role="rowheader">DNS</th><td role="cell" data-label="Swarm"><p><q data-claim="S13">Swarm mode has an internal DNS component that automatically assigns each service in the swarm a DNS entry.</q> <span class="cid">S13</span></p></td><td role="cell" data-label="Kubernetes"><p><q data-claim="K12">DNS For cluster-wide DNS resolution.</q> <span class="cid">K12</span></p></td><td role="cell" data-label="Claim ids"><code>S13 K12</code></td></tr>
+      <tr role="row"><th scope="row" role="rowheader">Cluster and its nodes</th><td role="cell" data-label="Swarm"><p><q data-claim="S1">Swarm mode lets you create a cluster of one or more Docker Engines called a swarm.</q> <span class="cid">S1</span></p><p><q data-claim="S6">You can create a swarm of one manager node, but you cannot have a worker node without at least one manager node.</q> <span class="cid">S6</span></p><p><q data-claim="S7">An odd number N of manager nodes in the cluster tolerates the loss of at most (N-1)/2 managers.</q> <span class="cid">S7</span></p></td><td role="cell" data-label="Kubernetes"><p><q data-claim="K1">A Kubernetes cluster consists of a control plane and one or more worker nodes.</q> <span class="cid">K1</span></p></td><td role="cell" data-label="Claim ids"><code>S1 S6 S7 K1</code></td></tr>
+      </tbody>
+  </table></div>
+
+  <h2>Where the quotations come from</h2>
+  <p>From the official documentation. Not run here. Fetched 2026-11-18.</p>
+  <ul class="srcs"><li><a href="https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/">How nodes work (Swarm mode)</a> <span class="stamp" style="display:inline">docs.docker.com</span></li><li><a href="https://docs.docker.com/engine/swarm/key-concepts/">Swarm key concepts</a> <span class="stamp" style="display:inline">docs.docker.com</span></li><li><a href="https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/">How services work (Swarm mode)</a> <span class="stamp" style="display:inline">docs.docker.com</span></li><li><a href="https://kubernetes.io/docs/concepts/overview/components/">Kubernetes Components</a> <span class="stamp" style="display:inline">kubernetes.io</span></li><li><a href="https://kubernetes.io/docs/concepts/workloads/pods/">Pods</a> <span class="stamp" style="display:inline">kubernetes.io</span></li><li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments</a> <span class="stamp" style="display:inline">kubernetes.io</span></li><li><a href="https://kubernetes.io/docs/concepts/services-networking/service/">Service</a> <span class="stamp" style="display:inline">kubernetes.io</span></li></ul>
+
+  <div class="next"><a href="swarm.html">&larr; Swarm</a><a href="commands.html">Next: every command &rarr;</a></div>
+</main>
+<noscript><p class="notice wrap">The navigation is added with JavaScript. The quotations and figures work without it.</p></noscript>
+<script src="assets/common.js"></script>
+<script src="assets/static.js"></script>
+</body>
+</html>

@@ -3,6 +3,8 @@
 //  2. with --update, the output of each run is written back as the transcript the page prints, plus data/verified.json
 //     and data/measured.json (layer sizes and which build steps are cached after each kind of edit, from real builds)
 //  3. every internal link resolves, no external font or script request, and a claim lint refuses phrases from the first review
+//  4. data/sources.json: every claim has id, side, source, url (docs.docker.com or kubernetes.io), quote and topic; every data-claim id
+//     a page uses exists; quotations shown in pages match; figures from the docs carry the "not run here" label
 //  --static skips the Docker runs and checks only 3 and the data files' shape.
 import fs from 'node:fs'
 import os from 'node:os'
@@ -47,6 +49,54 @@ for (const p of pages) {
 }
 for (const f of fs.readdirSync(path.join(root, 'assets')).filter((x) => x.endsWith('.css'))) {
   if (/@import url\(['"]?https?:/.test(read('assets/' + f))) bad(`assets/${f}: external @import`)
+}
+
+// ---------------------------------------------------------------- claims from the documentation (not run here)
+// data/sources.json holds verbatim quotations from the official docs. Anything a page says about Kubernetes, or about a
+// swarm of several machines, must point at one of them with data-claim="ID" (several ids separated by spaces).
+{
+  const decode = (t) => t.replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&')
+  const norm = (t) => decode(t.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim()
+  let src = null
+  try { src = JSON.parse(read('data/sources.json')) } catch (e) { bad(`data/sources.json: ${e.message}`) }
+  const ids = new Map()
+  // the label must be VISIBLE text in the figure (an element with class docs-label), not only in the svg's hidden description
+  const hasLabel = (fig) => [...fig.matchAll(/<(\w+)\b[^>]*class="[^"]*\bdocs-label\b[^"]*"[^>]*>([\s\S]*?)<\/\1>/g)].some((x) => norm(x[2]) === src.label)
+  if (src) {
+    if (!src.label) bad('data/sources.json: no "label"')
+    if (!Array.isArray(src.claims) || !src.claims.length) bad('data/sources.json: no claims')
+    for (const [i, c] of (src.claims || []).entries()) {
+      const who = `sources.json claim ${c.id || '#' + i}`
+      for (const k of ['id', 'side', 'source', 'url', 'quote', 'topic']) if (typeof c[k] !== 'string' || !c[k].trim()) bad(`${who}: missing ${k}`)
+      if (c.id) { if (ids.has(c.id)) bad(`${who}: duplicate id`); ids.set(c.id, c) }
+      try {
+        const u = new URL(c.url || '')
+        if (u.protocol !== 'https:' || !['docs.docker.com', 'kubernetes.io'].includes(u.hostname)) bad(`${who}: url ${c.url} is not on docs.docker.com or kubernetes.io`)
+      } catch { bad(`${who}: url is not a URL`) }
+    }
+    for (const p of pages) {
+      const html = read(p)
+      for (const m of html.matchAll(/data-claim="([^"]*)"/g)) for (const id of m[1].split(/\s+/).filter(Boolean)) if (!ids.has(id)) bad(`${p}: data-claim="${id}" is not in data/sources.json`)
+      // a quotation shown in a page must be word for word the one in sources.json
+      for (const m of html.matchAll(/<q\b[^>]*data-claim="([^"]+)"[^>]*>([\s\S]*?)<\/q>/g)) {
+        const c = ids.get(m[1].trim())
+        if (c && typeof c.quote === 'string' && norm(m[2]) !== c.quote.replace(/\s+/g, ' ').trim()) bad(`${p}: quotation for ${m[1]} differs from data/sources.json`)
+      }
+      // a figure drawn from the docs must carry the label in its own text
+      for (const m of html.matchAll(/<figure\b[^>]*class="[^"]*\bdocs\b[^"]*"[^>]*>([\s\S]*?)<\/figure>/g))
+        if (src.label && !hasLabel(m[1])) bad(`${p}: a figure from the docs lacks the label "${src.label}"`)
+    }
+    const must = { 'kubernetes.html': 'fig-side', 'swarm.html': 'fig-how' }
+    for (const [p, id] of Object.entries(must)) {
+      const m = fs.existsSync(path.join(root, p)) && read(p).match(new RegExp(`<figure\\b[^>]*id="${id}"[^>]*>([\\s\\S]*?)</figure>`))
+      if (!m) bad(`${p}: figure #${id} is missing`)
+      else {
+        if (!/class="[^"]*\bdocs\b/.test(m[0].slice(0, m[0].indexOf('>'))) ) bad(`${p}: figure #${id} is not marked class="docs" (dashed)`)
+        if (src.label && !hasLabel(m[1])) bad(`${p}: figure #${id} lacks the label "${src.label}"`)
+      }
+    }
+    if (fs.existsSync(path.join(root, 'kubernetes.html')) && src.label && !norm(read('kubernetes.html')).includes('Kubernetes was not run')) bad('kubernetes.html: it must say near the top that Kubernetes was not run')
+  }
 }
 
 const lessons = JSON.parse(read('data/lessons.json'))

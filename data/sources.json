@@ -1,0 +1,207 @@
+{
+  "about": "Statements about Docker Swarm and Kubernetes that this site did NOT run. Each is a verbatim quotation from the official documentation, with the page it came from and the day it was fetched. The static check fails if a quotation here is missing a source, and every figure that uses one points at its id.",
+  "label": "From the official documentation. Not run here.",
+  "fetched": "2026-11-18",
+  "claims": [
+    {
+      "id": "S1",
+      "side": "swarm",
+      "topic": "cluster",
+      "source": "How nodes work (Swarm mode)",
+      "url": "https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/",
+      "quote": "Swarm mode lets you create a cluster of one or more Docker Engines called a swarm."
+    },
+    {
+      "id": "S2",
+      "side": "swarm",
+      "topic": "nodes",
+      "source": "How nodes work (Swarm mode)",
+      "url": "https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/",
+      "quote": "There are two types of nodes: managers and workers."
+    },
+    {
+      "id": "S3",
+      "side": "swarm",
+      "topic": "state",
+      "source": "How nodes work (Swarm mode)",
+      "url": "https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/",
+      "quote": "Using a Raft implementation, the managers maintain a consistent internal state of the entire swarm and all the services running on it."
+    },
+    {
+      "id": "S4",
+      "side": "swarm",
+      "topic": "worker",
+      "source": "How nodes work (Swarm mode)",
+      "url": "https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/",
+      "quote": "Worker nodes are also instances of Docker Engine whose sole purpose is to execute containers."
+    },
+    {
+      "id": "S5",
+      "side": "swarm",
+      "topic": "worker",
+      "source": "How nodes work (Swarm mode)",
+      "url": "https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/",
+      "quote": "Worker nodes don't participate in the Raft distributed state, make scheduling decisions, or serve the swarm mode HTTP API."
+    },
+    {
+      "id": "S6",
+      "side": "swarm",
+      "topic": "cluster",
+      "source": "How nodes work (Swarm mode)",
+      "url": "https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/",
+      "quote": "You can create a swarm of one manager node, but you cannot have a worker node without at least one manager node."
+    },
+    {
+      "id": "S7",
+      "side": "swarm",
+      "topic": "fault-tolerance",
+      "source": "How nodes work (Swarm mode)",
+      "url": "https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/",
+      "quote": "An odd number N of manager nodes in the cluster tolerates the loss of at most (N-1)/2 managers."
+    },
+    {
+      "id": "S8",
+      "side": "swarm",
+      "topic": "dispatch",
+      "source": "Swarm key concepts",
+      "url": "https://docs.docker.com/engine/swarm/key-concepts/",
+      "quote": "The manager node dispatches units of work called tasks to worker nodes."
+    },
+    {
+      "id": "S9",
+      "side": "swarm",
+      "topic": "service",
+      "source": "Swarm key concepts",
+      "url": "https://docs.docker.com/engine/swarm/key-concepts/",
+      "quote": "A service is the definition of the tasks to execute on the manager or worker nodes."
+    },
+    {
+      "id": "S10",
+      "side": "swarm",
+      "topic": "task",
+      "source": "How services work (Swarm mode)",
+      "url": "https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/",
+      "quote": "A task is the atomic unit of scheduling within a swarm."
+    },
+    {
+      "id": "S11",
+      "side": "swarm",
+      "topic": "task",
+      "source": "How services work (Swarm mode)",
+      "url": "https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/",
+      "quote": "In the Swarm mode model, each task invokes exactly one container."
+    },
+    {
+      "id": "S12",
+      "side": "swarm",
+      "topic": "ingress",
+      "source": "Swarm key concepts",
+      "url": "https://docs.docker.com/engine/swarm/key-concepts/",
+      "quote": "All nodes in the swarm route ingress connections to a running task instance."
+    },
+    {
+      "id": "S13",
+      "side": "swarm",
+      "topic": "dns",
+      "source": "Swarm key concepts",
+      "url": "https://docs.docker.com/engine/swarm/key-concepts/",
+      "quote": "Swarm mode has an internal DNS component that automatically assigns each service in the swarm a DNS entry."
+    },
+    {
+      "id": "K1",
+      "side": "kubernetes",
+      "topic": "cluster",
+      "source": "Kubernetes Components",
+      "url": "https://kubernetes.io/docs/concepts/overview/components/",
+      "quote": "A Kubernetes cluster consists of a control plane and one or more worker nodes."
+    },
+    {
+      "id": "K2",
+      "side": "kubernetes",
+      "topic": "control-plane",
+      "source": "Kubernetes Components",
+      "url": "https://kubernetes.io/docs/concepts/overview/components/",
+      "quote": "kube-apiserver The core component server that exposes the Kubernetes HTTP API."
+    },
+    {
+      "id": "K3",
+      "side": "kubernetes",
+      "topic": "state",
+      "source": "Kubernetes Components",
+      "url": "https://kubernetes.io/docs/concepts/overview/components/",
+      "quote": "etcd Consistent and highly-available key value store for all API server data."
+    },
+    {
+      "id": "K4",
+      "side": "kubernetes",
+      "topic": "scheduler",
+      "source": "Kubernetes Components",
+      "url": "https://kubernetes.io/docs/concepts/overview/components/",
+      "quote": "kube-scheduler Looks for Pods not yet bound to a node, and assigns each Pod to a suitable node."
+    },
+    {
+      "id": "K5",
+      "side": "kubernetes",
+      "topic": "control-plane",
+      "source": "Kubernetes Components",
+      "url": "https://kubernetes.io/docs/concepts/overview/components/",
+      "quote": "kube-controller-manager Runs controllers to implement Kubernetes API behavior."
+    },
+    {
+      "id": "K6",
+      "side": "kubernetes",
+      "topic": "node",
+      "source": "Kubernetes Components",
+      "url": "https://kubernetes.io/docs/concepts/overview/components/",
+      "quote": "kubelet Ensures that Pods are running, including their containers."
+    },
+    {
+      "id": "K7",
+      "side": "kubernetes",
+      "topic": "pod",
+      "source": "Pods",
+      "url": "https://kubernetes.io/docs/concepts/workloads/pods/",
+      "quote": "Pods are the smallest deployable units of computing that you can create and manage in Kubernetes."
+    },
+    {
+      "id": "K8",
+      "side": "kubernetes",
+      "topic": "pod",
+      "source": "Pods",
+      "url": "https://kubernetes.io/docs/concepts/workloads/pods/",
+      "quote": "A Pod (as in a pod of whales or pea pod) is a group of one or more containers, with shared storage and network resources, and a specification for how to run the containers."
+    },
+    {
+      "id": "K9",
+      "side": "kubernetes",
+      "topic": "deployment",
+      "source": "Deployments",
+      "url": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+      "quote": "A Deployment manages a set of Pods to run an application workload, usually one that doesn't maintain state."
+    },
+    {
+      "id": "K10",
+      "side": "kubernetes",
+      "topic": "deployment",
+      "source": "Deployments",
+      "url": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+      "quote": "You describe a desired state in a Deployment, and the Deployment Controller changes the actual state to the desired state at a controlled rate."
+    },
+    {
+      "id": "K11",
+      "side": "kubernetes",
+      "topic": "service",
+      "source": "Service",
+      "url": "https://kubernetes.io/docs/concepts/services-networking/service/",
+      "quote": "In Kubernetes, a Service is a method for exposing a network application that is running as one or more Pods in your cluster."
+    },
+    {
+      "id": "K12",
+      "side": "kubernetes",
+      "topic": "dns",
+      "source": "Kubernetes Components",
+      "url": "https://kubernetes.io/docs/concepts/overview/components/",
+      "quote": "DNS For cluster-wide DNS resolution."
+    }
+  ]
+}

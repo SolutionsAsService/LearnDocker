@@ -14,6 +14,84 @@
   <h1>Commands</h1>
   <p class="stamp"></p>
   <p class="lede"><span data-fig="commands">&ndash;</span> commands across <span data-fig="lessons">&ndash;</span> lessons. Each one was run by a script before this page was published, and its output is the output of that run.</p>
+  <h2>Which object a command acts on</h2>
+  <figure class="fig" id="fig-cmds">
+    <svg viewBox="0 0 360 548" role="img" aria-labelledby="o-t o-d" focusable="false">
+      <title id="o-t">Which Docker object each command acts on</title><desc id="o-d">Five objects Docker works on and the commands on this page that act on each. Image: docker build, docker history. Container: docker run, docker ps, docker stop, docker rm, docker logs, and docker compose up, ps, logs and down. Network: docker network create, docker network ls, and docker run with --network. Volume: docker volume create, docker volume ls, and docker run with -v. Service: docker swarm init, docker service create, ls, scale, update and ps. All of these were run.</desc>
+      <defs><marker id="ah-o" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path class="s-ah" d="M0 0L10 5L0 10z"/></marker></defs>
+      <rect class="s-zone" x="10" y="10" width="340" height="55"/>
+      <rect class="s-layer" x="10" y="10" width="96" height="55"/>
+      <text class="s-t s-b" x="18" y="42.5">image</text>
+      <g>
+      <text class="s-t " x="118" y="32">docker build</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="51">docker history</text>
+      </g>
+      <rect class="s-zone" x="10" y="77" width="340" height="148"/>
+      <rect class="s-layer" x="10" y="77" width="96" height="148"/>
+      <text class="s-t s-b" x="18" y="156.0">container</text>
+      <g>
+      <text class="s-t " x="118" y="99">docker run</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="118">docker ps, ps -a</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="137">docker stop</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="156">docker rm</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="175">docker logs</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="194">docker compose up, ps, logs,</text>
+      <text class="s-t " x="118" y="211">down</text>
+      </g>
+      <rect class="s-net" x="10" y="237" width="340" height="74"/>
+      <rect class="s-layer" x="10" y="237" width="96" height="74"/>
+      <text class="s-t s-b" x="18" y="279.0">network</text>
+      <g>
+      <text class="s-t " x="118" y="259">docker network create</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="278">docker network ls</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="297">docker run --network</text>
+      </g>
+      <rect class="s-net" x="10" y="323" width="340" height="74"/>
+      <rect class="s-layer" x="10" y="323" width="96" height="74"/>
+      <text class="s-t s-b" x="18" y="365.0">volume</text>
+      <g>
+      <text class="s-t " x="118" y="345">docker volume create</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="364">docker volume ls</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="383">docker run -v</text>
+      </g>
+      <rect class="s-zone" x="10" y="409" width="340" height="91"/>
+      <rect class="s-layer" x="10" y="409" width="96" height="91"/>
+      <text class="s-t s-b" x="18" y="459.5">service</text>
+      <g>
+      <text class="s-t " x="118" y="431">docker swarm init</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="450">docker service create</text>
+      </g>
+      <g>
+      <text class="s-t " x="118" y="469">docker service ls, scale,</text>
+      <text class="s-t " x="118" y="486">update, ps</text>
+      </g>
+      <text class="s-t" x="10" y="520">Each command acts on the</text><text class="s-t" x="10" y="537">object in the band it is in.</text>
+    </svg>
+    <figcaption>Built from the commands listed below, all of which were run. A <code>docker run</code> that names a network or a volume is listed under that object too, because the network or volume is what the flag acts on.</figcaption>
+  </figure>
+  <h2>All commands</h2>
   <div style="margin:14px 0"><label for="q" style="font:700 .75rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);display:block">Filter</label><input id="q" type="search" placeholder="for example: network, volume, service" autocomplete="off" style="font:inherit;padding:8px 12px;min-height:44px;border:2px solid var(--brand-deep);background:var(--paper);color:var(--ink);min-width:260px;max-width:100%"> <span id="count" class="stamp" style="display:inline"></span></div>
   <div id="list"></div>
 </main>

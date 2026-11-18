@@ -98,6 +98,7 @@ LD.boot('home', function (G) {
     ['compose.html', 'Compose', 'Several containers from one file', services + ' services, 1 file'],
     ['networking.html', 'Networks and volumes', 'Finding each other, keeping data', 'names resolve only on a network you create'],
     ['swarm.html', 'Swarm', 'Replicas and a rolling update', '3 replicas, scaled to 5'],
+    ['kubernetes.html', 'Swarm and Kubernetes', 'Side by side, from the docs', 'not run here'],
     ['commands.html', 'Commands', 'Every command used here, with its output', cmds + ' commands, all run'],
     ['about.html', 'How this is checked', 'Versions, gaps, sources', 'Docker ' + G.verified.docker],
   ];

@@ -53,7 +53,7 @@ main.page > h1 { margin-bottom: 12px; }
 .callout b:first-child { font: 700 .75rem var(--mono); text-transform: uppercase; letter-spacing: .08em; display: block; margin-bottom: 4px; color: var(--ran); }
 .next { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 44px; padding-top: 16px; border-top: 1px solid var(--rule); }
 .next a { font-weight: 700; padding: 10px 0; }
-table.t { border-collapse: collapse; width: 100%; font-size: .92rem; margin: 1em 0; }
+table.t { border-collapse: collapse; width: 100%; font-size: .95rem; margin: 1em 0; }
 table.t th, table.t td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
 table.t th { font: 700 .75rem var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--ink2); }
 .tblwrap { overflow-x: auto; max-width: 100%; }
@@ -127,7 +127,7 @@ table.t th { font: 700 .75rem var(--mono); text-transform: uppercase; letter-spa
 /* figures: inline SVG diagrams. viewBox is 360 wide so 13 units of text render at about 13px on a 390px phone. */
 .fig { margin: 1.4em 0; max-width: 560px; border: 2px solid var(--brand); background: var(--paper); padding: 8px 6px 12px; }
 .fig svg { display: block; width: 100%; height: auto; }
-.fig figcaption { font-size: .88rem; color: var(--ink2); margin-top: 8px; max-width: 62ch; }
+.fig figcaption { font-size: .95rem; color: var(--ink2); margin-top: 8px; max-width: 62ch; }
 .fig .s-t { font: 13px var(--mono); fill: var(--ink); }
 .fig .s-b { font-weight: 700; }
 .fig .s-r { text-anchor: end; }
@@ -145,6 +145,32 @@ table.t th { font: 700 .75rem var(--mono); text-transform: uppercase; letter-spa
 .fig .s-ah { fill: var(--ink); }
 .fig .h1 { stroke: var(--rule); stroke-width: 3; }
 .fig .h0 { fill: var(--paper); }
+/* figures drawn from the documentation and NOT run here: dashed everywhere, plus a text label. Run figures stay solid. */
+.fig.docs { border: 3px dashed var(--ink); }
+.docs-label { display: inline-block; margin: 2px 4px 10px; padding: 4px 10px; border: 2px dashed var(--ink); font: 700 .8rem/1.3 var(--mono); color: var(--ink); background: var(--bg); }
+.fig .d-box { fill: var(--bg); stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 4; }
+.fig .d-task { fill: var(--paper); stroke: var(--ink); stroke-width: 2; stroke-dasharray: 3 3; }
+.fig .d-sq { fill: var(--ink2); stroke: none; }
+.fig .d-zone { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 10 5; }
+.fig .d-none { display: none; }
+.fig .d-line { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-dasharray: 6 4; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 24px; list-style: none; padding: 0; margin: 12px 0; }
+.legend li { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 1rem; }
+.legend i { display: inline-block; width: 34px; height: 18px; border: 3px solid var(--ink); background: var(--paper); flex: none; }
+.legend i.doc { border-style: dashed; }
+.claims td q { quotes: "\201C" "\201D"; }
+.claims td .cid { display: block; font: 600 .75rem var(--mono); color: var(--ink2); margin: 2px 0 8px; }
+.claims td code { white-space: nowrap; }
+.srcs { list-style: none; padding: 0; margin: 8px 0; }
+.srcs li { margin: 0; border-bottom: 1px solid var(--rule); }
+.srcs a { display: block; padding: 10px 0; min-height: 44px; overflow-wrap: anywhere; }
+@media (max-width: 700px) {
+  table.claims, table.claims tbody, table.claims tr, table.claims th, table.claims td { display: block; width: 100%; }
+  table.claims thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  table.claims tr { border: 2px dashed var(--ink); margin: 0 0 14px; padding: 4px 10px 8px; background: var(--paper); }
+  table.claims th, table.claims td { border: 0; padding: 6px 0; }
+  table.claims td[data-label]::before { content: attr(data-label); display: block; font: 700 .75rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink2); }
+}
 @media (forced-colors: active) { .fig .s-layer, .fig .s-box, .fig .s-net { stroke: CanvasText; } }
 @media print { header.site nav, .copy, .tabs { display: none; } }
 @media (forced-colors: active) { .layers li.rebuilt, .dockerfile li.rebuilt { border: 3px solid Highlight; } .layers li { border: 1px solid CanvasText; } }

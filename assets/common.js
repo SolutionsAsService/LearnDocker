@@ -3,7 +3,7 @@
 (function () {
   'use strict';
   var REPO = 'https://github.com/SolutionsAsService/LearnDocker';
-  var NAV = [['concepts', 'concepts.html', 'Concepts'], ['dockerfile', 'dockerfile.html', 'Images'], ['compose', 'compose.html', 'Compose'], ['networking', 'networking.html', 'Networks'], ['swarm', 'swarm.html', 'Swarm'], ['commands', 'commands.html', 'Commands'], ['about', 'about.html', 'How this is checked']];
+  var NAV = [['concepts', 'concepts.html', 'Concepts'], ['dockerfile', 'dockerfile.html', 'Images'], ['compose', 'compose.html', 'Compose'], ['networking', 'networking.html', 'Networks'], ['swarm', 'swarm.html', 'Swarm'], ['kubernetes', 'kubernetes.html', 'Kubernetes'], ['commands', 'commands.html', 'Commands'], ['about', 'about.html', 'How this is checked']];
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function $(s, r) { return (r || document).querySelector(s); }
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
